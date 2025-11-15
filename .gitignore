@@ -1,0 +1,23 @@
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+.gitcache/
+.turbo/
+.cache/
+*.log
+*.pid
+*.pid.lock
+.swp
+.eslintcache
+
+# Env / tooling
+.env*
+.vercel/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
