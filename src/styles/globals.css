@@ -36,9 +36,8 @@
   body {
     background: linear-gradient(135deg, #fafafa 0%, #f8fafc 100%);
     width: 100%;
-    min-height: 100dvh;
+    min-height: 100vh;
     overflow-x: hidden;
-    overflow-y: auto;
     /* 모바일 스와이프 방지 */
     touch-action: pan-y;
     overscroll-behavior-x: none;
@@ -53,7 +52,7 @@
   /* 루트 컨테이너에서만 가로 스크롤 방지 */
   html,
   body {
-    max-width: 100dvw;
+    max-width: 100%;
     overflow-x: hidden;
   }
   
