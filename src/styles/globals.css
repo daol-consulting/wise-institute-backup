@@ -38,6 +38,7 @@
     width: 100%;
     min-height: 100dvh;
     overflow-x: hidden;
+    overflow-y: auto;
     /* 모바일 스와이프 방지 */
     touch-action: pan-y;
     overscroll-behavior-x: none;
@@ -51,11 +52,16 @@
   
   /* 루트 컨테이너에서만 가로 스크롤 방지 */
   html,
-  body,
-  #__next,
-  main {
+  body {
     max-width: 100dvw;
     overflow-x: hidden;
+  }
+  
+  /* main은 스크롤 가능하도록 */
+  main {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: visible;
   }
 }
 
@@ -132,3 +138,4 @@
     @apply shadow-glow hover:shadow-glow transition-shadow duration-300;
   }
 }
+

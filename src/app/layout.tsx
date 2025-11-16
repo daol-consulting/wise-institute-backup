@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className="font-pretendard w-full overflow-x-hidden">
         <AOSProvider>
           <Navbar />
-          <main className="min-h-screen w-full overflow-x-hidden">
+          <main className="w-full">
             {children}
           </main>
           <Footer />
