@@ -110,14 +110,14 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div>
       {/* Hero Section - 70% height */}
       <section className="relative pt-16 lg:pt-20 bg-white">
         {/* White left margin (10%) - Hidden on mobile */}
         <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-[10%] bg-white z-[10]" />
         
         {/* Hero Content - 70% height */}
-        <div className="relative" style={{ height: '70vh' }}>
+        <div className="relative" style={{ minHeight: '70vh', height: '70vh' }}>
           {/* Bottom ribbon container - behind image - Full width on mobile, 90% with left margin on desktop */}
           <div className="absolute bottom-0 left-0 right-0 w-full lg:w-[90%] lg:ml-[10%] z-[5]">
             {/* Diagonal Ribbon - behind image, positioned to show below image */}
