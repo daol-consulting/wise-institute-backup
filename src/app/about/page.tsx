@@ -1,8 +1,27 @@
+"use client";
+
 import Image from 'next/image'
+import { useState } from 'react'
 import { Home } from 'lucide-react'
 import PageHero from '../../components/PageHero'
 
+const COMMUNITY_PHOTOS = [
+  { src: '/gallery/about1.png', alt: 'WISE Live Surgery Study Club - shared meals' },
+  { src: '/gallery/about2.png', alt: 'WISE Live Surgery Study Club - community moments' },
+  { src: '/gallery/about3.png', alt: 'WISE Live Surgery Study Club - hands-on learning' },
+]
+
+const PDC_PHOTOS = [
+  { src: '/gallery/WISE.015.jpeg', alt: 'PDC live stage announcement' },
+  { src: '/gallery/WISE.016.jpeg', alt: 'WISE live surgery plan presentation' },
+  { src: '/gallery/WISE.017.jpeg', alt: 'Live surgery audience and setup' },
+  { src: '/gallery/WISE.018.jpeg', alt: 'Clinical close-up during live demo' },
+  { src: '/gallery/WISE.019.jpeg', alt: 'Full audience view of PDC live stage' },
+]
+
 export default function AboutPage() {
+  const [activePhoto, setActivePhoto] = useState<{ src: string; alt: string } | null>(null)
+
   return (
     <div className="min-h-screen pt-16">
       <PageHero
@@ -34,7 +53,7 @@ export default function AboutPage() {
       {/* Our Story Section */}
       <section className="section-padding bg-background">
         <div className="container-custom">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto px-2 sm:px-4">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 mb-12" data-aos="fade-up">
               Our Story
             </h2>
@@ -65,7 +84,7 @@ export default function AboutPage() {
       {/* Timeline Section */}
       <section className="section-padding bg-white">
         <div className="container-custom">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto px-2 sm:px-4">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 mb-12 text-center" data-aos="fade-up">
               Timeline Highlights
             </h2>
@@ -129,6 +148,42 @@ export default function AboutPage() {
                     These photos are from WISE Live Surgery Study Club. In between patient care and after patient care is the fun time.
                   </p>
                 </div>
+              <div className="mb-6">
+                <div className="sm:hidden flex gap-4 px-4 overflow-x-auto snap-x snap-mandatory">
+                  {COMMUNITY_PHOTOS.map((photo) => (
+                    <button
+                      key={photo.src}
+                      type="button"
+                      onClick={() => setActivePhoto(photo)}
+                      className="relative min-w-[75%] snap-start rounded-2xl overflow-hidden border border-secondary-100 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
+                    >
+                      <div className="relative aspect-[4/3]">
+                        <Image src={photo.src} alt={photo.alt} fill className="object-cover" sizes="80vw" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                <div className="hidden sm:grid sm:grid-cols-3 gap-6">
+                  {COMMUNITY_PHOTOS.map((photo) => (
+                    <button
+                      key={photo.src}
+                      type="button"
+                      onClick={() => setActivePhoto(photo)}
+                      className="relative w-full rounded-2xl overflow-hidden border border-secondary-100 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
+                    >
+                      <div className="relative aspect-[3/2]">
+                        <Image
+                          src={photo.src}
+                          alt={photo.alt}
+                          fill
+                          className="object-cover"
+                          sizes="(min-width:1280px) 320px, (min-width:768px) 260px, 33vw"
+                        />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                   <div className="bg-primary-50 rounded-lg p-4 border border-primary-200">
                     <div className="text-3xl font-bold text-primary-700 mb-1">2</div>
@@ -154,11 +209,74 @@ export default function AboutPage() {
                     Our highlight in our career and implant education is being on the PDC live stage surgery. The PDC scientific committee wanted us to target beginner implantologists since we are new to the PDC stage. But of course, what fun would it be if we spend an hour and a half placing one simple implant?
                   </p>
                 </div>
+                <div className="mb-6">
+                  <div className="sm:hidden flex gap-4 px-4 overflow-x-auto snap-x snap-mandatory">
+                    {PDC_PHOTOS.map((photo) => (
+                      <button
+                        key={photo.src}
+                        type="button"
+                        onClick={() => setActivePhoto(photo)}
+                        className="relative min-w-[75%] snap-start rounded-2xl overflow-hidden border border-secondary-100 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
+                      >
+                        <div className="relative aspect-[4/3]">
+                          <Image src={photo.src} alt={photo.alt} fill className="object-cover" sizes="80vw" />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="hidden sm:grid sm:grid-cols-3 gap-6">
+                    {PDC_PHOTOS.map((photo) => (
+                      <button
+                        key={photo.src}
+                        type="button"
+                        onClick={() => setActivePhoto(photo)}
+                        className="relative w-full rounded-2xl overflow-hidden border border-secondary-100 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
+                      >
+                        <div className="relative aspect-[3/2]">
+                          <Image
+                            src={photo.src}
+                            alt={photo.alt}
+                            fill
+                            className="object-cover"
+                            sizes="(min-width:1280px) 320px, (min-width:768px) 260px, 33vw"
+                          />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      {activePhoto && (
+        <div className="fixed inset-0 z-[10000] bg-black/80 flex items-center justify-center px-4">
+          <div className="relative max-w-5xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl">
+            <button
+              type="button"
+              onClick={() => setActivePhoto(null)}
+              className="absolute top-4 right-4 z-10 inline-flex items-center justify-center w-10 h-10 rounded-full bg-black/70 text-white hover:bg-black focus:outline-none focus:ring-2 focus:ring-white"
+              aria-label="Close photo"
+            >
+              ×
+            </button>
+            <div className="relative w-full h-[60vh] sm:h-[70vh] bg-black">
+              <Image
+                src={activePhoto.src}
+                alt={activePhoto.alt}
+                fill
+                className="object-contain"
+                sizes="100vw"
+              />
+            </div>
+            <div className="p-4 text-center text-sm text-secondary-600 bg-white">
+              {activePhoto.alt}
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   )
