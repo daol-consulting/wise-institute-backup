@@ -138,7 +138,7 @@ export default function HomePage() {
             {/* Diagonal Ribbon - behind image, positioned to show below image */}
             {/* Mobile: left-6, Desktop: left-24 */}
             <DiagonalRibbon 
-              wrapperClassName="absolute left-6 lg:left-24 right-6 -bottom-2 lg:-bottom-8 pointer-events-none z-[5]" 
+              wrapperClassName="absolute left-6 lg:left-24 right-6 -bottom-2 lg:-bottom-4 pointer-events-none z-[5]" 
               heightClass="h-24" 
               colorClass="bg-primary-600"
               rotateClass="rotate-[-8deg] lg:rotate-[-4deg]"
