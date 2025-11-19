@@ -45,8 +45,8 @@ export default function HomePage() {
       subtitle: "From hands-on training to surgical excellence",
       title: "WISE Institute",
       description: "AI-powered dental implant education for general dentists across Western Canada",
-      ctaText: "",
-      ctaLink: "",
+      ctaText: "Learn More",
+      ctaLink: "/about",
       slideLabel: "WISE Institute Education",
       image: "/gallery/wise.png",
       desktopImage: "/gallery/hero.png"
@@ -55,8 +55,8 @@ export default function HomePage() {
       subtitle: "Hands-on surgical implant education",
       title: "Live Surgery Training",
       description: "Real patient cases under expert supervision",
-      ctaText: "",
-      ctaLink: "",
+      ctaText: "View Programs",
+      ctaLink: "/programs",
       slideLabel: "Live Surgery Study Club",
       image: "/gallery/wise2.png"
     },
@@ -64,8 +64,8 @@ export default function HomePage() {
       subtitle: "Comprehensive 8-day program",
       title: "Implant Residency",
       description: "Maximize learning in minimal time with 2 live surgery days",
-      ctaText: "",
-      ctaLink: "",
+      ctaText: "Register Now",
+      ctaLink: "/schedule",
       slideLabel: "HiOssen F.I.D Course",
       image: "/gallery/wise3.png"
     }
@@ -507,7 +507,7 @@ export default function HomePage() {
           eyebrow="RESOURCES"
           title="From live surgeries to real clinic results"
           description="See residency highlights, case galleries and resources that show how WISE training translates into everyday clinical outcomes."
-          leftCard={{ imageSrc: '/gallery/wise.png', title: 'Case gallery', href: '/gallery', ctaLabel: 'Browse gallery' }}
+          leftCard={{ imageSrc: '/gallery/wise.png', title: 'Case gallery', href: '/programs', ctaLabel: 'Browse gallery' }}
           rightCard={{ imageSrc: '/gallery/wise2.png', title: 'Residency highlights', href: '/programs', ctaLabel: 'View highlights' }}
         />
       </div>
@@ -589,7 +589,7 @@ export default function HomePage() {
             }
           ]}
           moreLinkText="View more stories"
-          moreLinkHref="/stories"
+          moreLinkHref="/programs"
         />
       </div>
 
