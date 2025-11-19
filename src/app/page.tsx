@@ -334,7 +334,7 @@ export default function HomePage() {
       {/* WISE Institute Intro Section (Second Section) */}
       <section className="relative section-padding bg-white overflow-hidden" data-aos="fade-up">
         {/* Watermark text */}
-        <div className="pointer-events-none select-none absolute inset-0 hidden lg:block z-0">
+        <div className="pointer-events-none select-none absolute inset-0 hidden md:block z-0">
           <span className="absolute top-8 left-0 text-[16rem] leading-none font-extrabold text-secondary-200/30 tracking-tight">
             WISE
           </span>
@@ -352,21 +352,21 @@ export default function HomePage() {
           />
 
           {/* Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
             {/* Left column: image with ribbon */}
             <div
-              className="relative max-w-sm mx-auto w-full lg:max-w-none"
+              className="relative max-w-sm mx-auto w-full md:max-w-none"
               data-aos="fade-right"
               onTouchStart={handleCampaignTouchStart}
               onTouchMove={handleCampaignTouchMove}
               onTouchEnd={handleCampaignTouchEnd}
             >
-              {/* Mobile watermark near image */}
-              <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 flex flex-col items-center text-center lg:hidden z-0">
-                <span className="text-[9rem] leading-none font-extrabold text-secondary-200/50 tracking-tight">
+              {/* Mobile watermark - positioned to peek out from behind image */}
+              <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center text-center md:hidden z-[40]">
+                <span className="text-[12rem] leading-none font-extrabold text-secondary-200/50 tracking-tight whitespace-nowrap">
                   WISE
                 </span>
-                <span className="text-4xl font-extrabold text-secondary-200/50 tracking-tight">
+                <span className="text-[10rem] font-extrabold text-secondary-200/50 tracking-tight whitespace-nowrap">
                   INSTITUTE
                 </span>
               </div>
@@ -381,9 +381,9 @@ export default function HomePage() {
               </div>
               
               {/* Image container - on top of ribbon with white background to hide ribbon overlap */}
-              <div className="relative z-[50] overflow-hidden shadow-xl border border-secondary-100 bg-transparent max-w-[80%] sm:max-w-[75%] mx-auto lg:max-w-full">
+              <div className="relative z-[50] overflow-visible shadow-xl border border-secondary-100 bg-transparent max-w-[80%] sm:max-w-[75%] mx-auto md:max-w-full">
                 <div className="absolute inset-0 bg-white z-0" />
-                <div className="relative aspect-[3/4] overflow-hidden z-20">
+                <div className="relative aspect-[3/4] overflow-hidden z-20 bg-white">
                   <div
                     className="absolute inset-0 flex h-full"
                     style={{
