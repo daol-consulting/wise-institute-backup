@@ -20,6 +20,7 @@ type PageHeroProps = {
   align?: 'left' | 'center'
   backgroundImage?: string
   imageAlt?: string
+  imagePosition?: 'top' | 'center' | 'bottom' | string
   overlayClassName?: string
   heightClassName?: string
   backgroundClassName?: string
@@ -39,6 +40,7 @@ export default function PageHero({
   align = 'center',
   backgroundImage,
   imageAlt = title,
+  imagePosition = 'center',
   overlayClassName = 'bg-black/40',
   heightClassName,
   backgroundClassName,
@@ -54,6 +56,15 @@ export default function PageHero({
     align === 'center'
       ? 'text-center flex flex-col items-center justify-center'
       : 'text-left flex flex-col justify-center'
+  
+  // Map imagePosition to CSS object-position values
+  const getObjectPosition = () => {
+    if (imagePosition === 'top') return 'center top'
+    if (imagePosition === 'center') return 'center center'
+    if (imagePosition === 'bottom') return 'center bottom'
+    // Allow custom values like 'center 30%', 'left top', etc.
+    return imagePosition
+  }
 
   return (
     <>
@@ -70,7 +81,15 @@ export default function PageHero({
       >
         {hasImage && backgroundImage && (
           <>
-            <Image src={backgroundImage} alt={imageAlt} fill className="object-cover" priority sizes="100vw" />
+            <Image 
+              src={backgroundImage} 
+              alt={imageAlt} 
+              fill 
+              className="object-cover" 
+              priority 
+              sizes="100vw"
+              style={{ objectPosition: getObjectPosition() }}
+            />
             <div className={clsx('absolute inset-0', overlayClassName)} />
           </>
         )}

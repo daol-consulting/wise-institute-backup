@@ -32,7 +32,8 @@ export default function ContactPage() {
         eyebrow="WISE Institute"
         title="Contact Us"
         description="Interested in joining WISE? We'd love to hear from you and answer any questions about our programs."
-        backgroundClassName="bg-gradient-to-br from-background to-primary/5"
+        backgroundImage="/gallery/wise4.png"
+        heightClassName="h-[40vh] min-h-[350px]"
         contentProps={{ 'data-aos': 'fade-up' }}
         breadcrumbs={[
           { label: 'Home', href: '/', icon: <Home className="h-4 w-4" />, showLabel: false },

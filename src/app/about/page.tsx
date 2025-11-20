@@ -27,7 +27,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="WISE Institute"
         title="About Us"
-        backgroundImage="/gallery/wise.png"
+        backgroundImage="/gallery/about1.png"
         heightClassName="h-[50vh] min-h-[400px]"
         breadcrumbs={[
           { label: 'Home', href: '/', icon: <Home className="h-4 w-4" />, showLabel: false },
