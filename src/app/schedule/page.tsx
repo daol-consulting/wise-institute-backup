@@ -222,7 +222,7 @@ export default function SchedulePage() {
         eyebrow="WISE Institute"
         title="Schedule & Registration"
         description="Join our upcoming programs and advance your implant surgical skills with hands-on experience."
-        backgroundImage="/gallery/wise5.png"
+        backgroundImage="/gallery/wise5.webp"
         heightClassName="h-[45vh] min-h-[400px]"
         contentProps={{ 'data-aos': 'fade-up' }}
         breadcrumbs={[

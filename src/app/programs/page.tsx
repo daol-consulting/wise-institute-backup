@@ -12,7 +12,7 @@ export default function ProgramsPage() {
         eyebrow="WISE Institute"
         title="Our Programs"
         description="Comprehensive implant education designed for busy clinicians who want to maximize learning in minimal time."
-        backgroundImage="/gallery/WISE.005.jpeg"
+        backgroundImage="/gallery/WISE.005.webp"
         imagePosition="top"
         heightClassName="h-[45vh] min-h-[400px]"
         contentProps={{ 'data-aos': 'fade-up' }}

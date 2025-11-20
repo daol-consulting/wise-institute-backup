@@ -215,7 +215,7 @@ export default function NewsPage() {
       <PageHero
         eyebrow="WISE Institute"
         title="WISE Institute News"
-        backgroundImage="/gallery/wise3.png"
+        backgroundImage="/gallery/wise3.webp"
         overlayClassName="bg-black/50"
         heightClassName="mt-16 lg:mt-20 h-[200px] sm:h-[250px] md:h-[300px] lg:h-[400px] xl:h-[500px]"
         breadcrumbs={[

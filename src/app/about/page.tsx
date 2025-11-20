@@ -6,17 +6,17 @@ import { Home } from 'lucide-react'
 import PageHero from '../../components/PageHero'
 
 const COMMUNITY_PHOTOS = [
-  { src: '/gallery/about1.png', alt: 'WISE Live Surgery Study Club - shared meals' },
-  { src: '/gallery/about2.png', alt: 'WISE Live Surgery Study Club - community moments' },
-  { src: '/gallery/about3.png', alt: 'WISE Live Surgery Study Club - hands-on learning' },
+  { src: '/gallery/about1.webp', alt: 'WISE Live Surgery Study Club - shared meals' },
+  { src: '/gallery/about2.webp', alt: 'WISE Live Surgery Study Club - community moments' },
+  { src: '/gallery/about3.webp', alt: 'WISE Live Surgery Study Club - hands-on learning' },
 ]
 
 const PDC_PHOTOS = [
-  { src: '/gallery/WISE.015.jpeg', alt: 'PDC live stage announcement' },
-  { src: '/gallery/WISE.016.jpeg', alt: 'WISE live surgery plan presentation' },
-  { src: '/gallery/WISE.017.jpeg', alt: 'Live surgery audience and setup' },
-  { src: '/gallery/WISE.018.jpeg', alt: 'Clinical close-up during live demo' },
-  { src: '/gallery/WISE.019.jpeg', alt: 'Full audience view of PDC live stage' },
+  { src: '/gallery/WISE.015.webp', alt: 'PDC live stage announcement' },
+  { src: '/gallery/WISE.016.webp', alt: 'WISE live surgery plan presentation' },
+  { src: '/gallery/WISE.017.webp', alt: 'Live surgery audience and setup' },
+  { src: '/gallery/WISE.018.webp', alt: 'Clinical close-up during live demo' },
+  { src: '/gallery/WISE.019.webp', alt: 'Full audience view of PDC live stage' },
 ]
 
 export default function AboutPage() {
@@ -27,7 +27,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="WISE Institute"
         title="About Us"
-        backgroundImage="/gallery/about1.png"
+        backgroundImage="/gallery/about1.webp"
         heightClassName="h-[50vh] min-h-[400px]"
         breadcrumbs={[
           { label: 'Home', href: '/', icon: <Home className="h-4 w-4" />, showLabel: false },

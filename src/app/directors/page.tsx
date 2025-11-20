@@ -67,7 +67,7 @@ export default function DirectorsPage() {
         eyebrow="WISE Institute"
         title="Our Directors"
         description="Meet the experienced practitioners who founded WISE Institute and continue to guide our educational mission."
-        backgroundImage="/gallery/wise2.png"
+        backgroundImage="/gallery/wise2.webp"
         heightClassName="h-[45vh] min-h-[400px]"
         contentProps={{ 'data-aos': 'fade-up' }}
         breadcrumbs={[

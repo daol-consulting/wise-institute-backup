@@ -31,7 +31,7 @@ export default function Logo({ className = '', size = 'md', showTagline = false,
   }
 
   const colors = colorClasses[variant]
-  const logoSrc = variant === 'white' ? '/logo/Transparent-PNG-White.png' : '/logo/Transparent-inlinePNG.png'
+  const logoSrc = variant === 'white' ? '/logo/Transparent-PNG-White.webp' : '/logo/Transparent-inlinePNG.webp'
 
   return (
     <div className={`flex flex-col items-center ${className}`}>

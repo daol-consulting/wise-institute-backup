@@ -22,13 +22,13 @@ export default function HomePage() {
   const [campaignIndex, setCampaignIndex] = useState(0)
 
   const campaignItems = [
-    { src: '/gallery/wise.png', title: 'Implant Residency Campaign' },
-    { src: '/gallery/wise2.png', title: 'Live Surgery Study Club' },
-    { src: '/gallery/wise3.png', title: 'Residency Highlights' },
-    { src: '/gallery/wise4.png', title: 'Mentorship & Support' },
-    { src: '/gallery/wise5.png', title: 'Hands-on Every Day' },
-    { src: '/gallery/wise6.png', title: 'Course Materials' },
-    { src: '/gallery/wise7.png', title: 'Advanced Training Resources' },
+    { src: '/gallery/wise.webp', title: 'Implant Residency Campaign' },
+    { src: '/gallery/wise2.webp', title: 'Live Surgery Study Club' },
+    { src: '/gallery/wise3.webp', title: 'Residency Highlights' },
+    { src: '/gallery/wise4.webp', title: 'Mentorship & Support' },
+    { src: '/gallery/wise5.webp', title: 'Hands-on Every Day' },
+    { src: '/gallery/wise6.webp', title: 'Course Materials' },
+    { src: '/gallery/wise7.webp', title: 'Advanced Training Resources' },
   ]
 
   const nextCampaign = () => {
@@ -47,8 +47,8 @@ export default function HomePage() {
       ctaText: "LEARN MORE",
       ctaLink: "/about",
       slideLabel: "WISE Institute Education",
-      image: "/gallery/wise.png",
-      desktopImage: "/gallery/hero.png"
+      image: "/gallery/wise.webp",
+      desktopImage: "/gallery/hero.webp"
     },
     {
       subtitle: "Hands-on surgical implant education",
@@ -57,7 +57,7 @@ export default function HomePage() {
       ctaText: "VIEW PROGRAMS",
       ctaLink: "/programs",
       slideLabel: "Live Surgery Study Club",
-      image: "/gallery/wise2.png"
+      image: "/gallery/wise2.webp"
     },
     {
       subtitle: "Comprehensive 8-day program",
@@ -66,7 +66,7 @@ export default function HomePage() {
       ctaText: "REGISTER NOW",
       ctaLink: "/schedule",
       slideLabel: "HiOssen F.I.D Course",
-      image: "/gallery/wise3.png"
+      image: "/gallery/wise3.webp"
     }
   ]
 
@@ -467,7 +467,7 @@ export default function HomePage() {
       {/* Statistics Section */}
       <div data-aos="fade-up" data-aos-delay="50">
         <StatsSection
-          imageSrc="/gallery/wise3.png"
+          imageSrc="/gallery/wise3.webp"
           eyebrow="PROGRAM STATS"
           title="WISE Institute at a glance"
           description="Hands-on implant education built for busy clinicians — live surgeries, daily practice, and real clinical impact."
@@ -476,7 +476,7 @@ export default function HomePage() {
             label: 'Annual teaching hours',
             icon: (
               <Image
-                src="/icons/times.png"
+                src="/icons/times.webp"
                 alt="Hours icon"
                 width={80}
                 height={80}
@@ -489,7 +489,7 @@ export default function HomePage() {
             label: 'Trained per year',
             icon: (
               <Image
-                src="/icons/doctors.png"
+                src="/icons/doctors.webp"
                 alt="Doctors icon"
                 width={80}
                 height={80}
@@ -506,8 +506,8 @@ export default function HomePage() {
           eyebrow="RESOURCES"
           title="From live surgeries to real clinic results"
           description="See residency highlights, case galleries and resources that show how WISE training translates into everyday clinical outcomes."
-          leftCard={{ imageSrc: '/gallery/wise.png', title: 'Case gallery', href: '/programs', ctaLabel: 'Browse gallery' }}
-          rightCard={{ imageSrc: '/gallery/wise2.png', title: 'Residency highlights', href: '/programs', ctaLabel: 'View highlights' }}
+          leftCard={{ imageSrc: '/gallery/wise.webp', title: 'Case gallery', href: '/programs', ctaLabel: 'Browse gallery' }}
+          rightCard={{ imageSrc: '/gallery/wise2.webp', title: 'Residency highlights', href: '/programs', ctaLabel: 'View highlights' }}
         />
       </div>
 
@@ -575,15 +575,15 @@ export default function HomePage() {
           ]}
           storyItems={[
             {
-              imageSrc: '/gallery/wise.png',
+              imageSrc: '/gallery/wise.webp',
               caption: 'Dentists placing their first implants under expert supervision.'
             },
             {
-              imageSrc: '/gallery/wise2.png',
+              imageSrc: '/gallery/wise2.webp',
               caption: 'Live surgery training with real patient cases.'
             },
             {
-              imageSrc: '/gallery/wise3.png',
+              imageSrc: '/gallery/wise3.webp',
               caption: 'Hands-on practice sessions using pig jaws for realistic experience.'
             }
           ]}

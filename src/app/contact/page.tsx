@@ -32,7 +32,7 @@ export default function ContactPage() {
         eyebrow="WISE Institute"
         title="Contact Us"
         description="Interested in joining WISE? We'd love to hear from you and answer any questions about our programs."
-        backgroundImage="/gallery/wise4.png"
+        backgroundImage="/gallery/wise4.webp"
         heightClassName="h-[40vh] min-h-[350px]"
         contentProps={{ 'data-aos': 'fade-up' }}
         breadcrumbs={[
