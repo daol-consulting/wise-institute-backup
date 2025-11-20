@@ -239,7 +239,7 @@ export default function HomePage() {
                         <div className="pt-2 sm:pt-4 pointer-events-auto">
                           <Link 
                             href={slide.ctaLink}
-                            className="inline-flex items-center gap-1.5 sm:gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 sm:px-8 py-2 sm:py-4 font-extrabold transition-colors text-sm sm:text-lg"
+                            className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-4 sm:px-8 py-2 sm:py-4 font-semibold shadow-medium hover:shadow-large hover:scale-105 transition-all duration-300 text-sm sm:text-base"
                           >
                             {slide.ctaText}
                           </Link>
@@ -260,12 +260,12 @@ export default function HomePage() {
                 {/* Navigation Content */}
                 <div className="flex items-center justify-between mb-2 sm:mb-4 lg:mb-5">
                   {/* Left Side - Slide Labels with circular icons */}
-                  <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 flex-wrap">
+                  <div className="flex items-center gap-1.5 sm:gap-3 lg:gap-4 flex-nowrap overflow-x-auto">
                     {slides.map((slide, index) => (
                       <button
                         key={index}
                         onClick={() => handleSlideClick(index)}
-                        className={`flex items-center gap-1.5 sm:gap-2 lg:gap-3 transition-all duration-300 cursor-pointer ${
+                        className={`flex items-center gap-1 sm:gap-1.5 lg:gap-3 transition-all duration-300 cursor-pointer flex-shrink-0 ${
                           index === currentSlide
                             ? 'text-white'
                             : 'text-white/70 hover:text-white'
@@ -278,7 +278,7 @@ export default function HomePage() {
                         }`}>
                           {index + 1}
                         </span>
-                        <span className="text-[10px] sm:text-xs lg:text-sm font-medium whitespace-nowrap">
+                        <span className="text-[9px] sm:text-xs lg:text-sm font-medium whitespace-nowrap hidden sm:inline">
                           {slide.slideLabel}
                         </span>
                       </button>
