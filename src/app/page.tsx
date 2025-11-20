@@ -209,12 +209,12 @@ export default function HomePage() {
 
                 {/* Slide Content - above image */}
                 <div
-                  className="relative z-[60] container-custom h-full flex items-center pointer-events-none"
+                  className="relative z-[60] container-custom h-full flex items-center pointer-events-none pb-20 sm:pb-0"
                   data-aos="fade-up"
                 >
                   <div className="w-full max-w-3xl">
                     {/* Text shadow for readability on light images */}
-                    <div className="space-y-6 lg:space-y-8 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_50%)]">
+                    <div className="space-y-4 sm:space-y-6 lg:space-y-8 [text-shadow:_2px_2px_4px_rgb(0_0_0_/_50%)]">
                       {/* Subtitle */}
                       {slide.subtitle && (
                         <p className="text-sm md:text-base text-white font-medium uppercase tracking-wider">
@@ -236,10 +236,10 @@ export default function HomePage() {
                       
                       {/* CTA Button */}
                       {slide.ctaText && (
-                        <div className="pt-4 pointer-events-auto">
+                        <div className="pt-2 sm:pt-4 pointer-events-auto">
                           <Link 
                             href={slide.ctaLink}
-                            className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 font-extrabold transition-colors text-lg"
+                            className="inline-flex items-center gap-1.5 sm:gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 sm:px-8 py-2 sm:py-4 font-extrabold transition-colors text-sm sm:text-lg"
                           >
                             {slide.ctaText}
                           </Link>
@@ -256,29 +256,29 @@ export default function HomePage() {
           <div className="absolute bottom-0 left-0 right-0 z-[60]" data-aos="fade-up">
             {/* Bottom Navigation Bar */}
             <div className="relative bg-transparent text-white pointer-events-auto">
-              <div className="container-custom pb-4 lg:pb-5">
+              <div className="container-custom pb-2 sm:pb-4 lg:pb-5">
                 {/* Navigation Content */}
-                <div className="flex items-center justify-between mb-4 lg:mb-5">
+                <div className="flex items-center justify-between mb-2 sm:mb-4 lg:mb-5">
                   {/* Left Side - Slide Labels with circular icons */}
-                  <div className="flex items-center gap-3 lg:gap-4 flex-wrap">
+                  <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 flex-wrap">
                     {slides.map((slide, index) => (
                       <button
                         key={index}
                         onClick={() => handleSlideClick(index)}
-                        className={`flex items-center gap-2 lg:gap-3 transition-all duration-300 cursor-pointer ${
+                        className={`flex items-center gap-1.5 sm:gap-2 lg:gap-3 transition-all duration-300 cursor-pointer ${
                           index === currentSlide
                             ? 'text-white'
                             : 'text-white/70 hover:text-white'
                         }`}
                       >
-                        <span className={`w-6 h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center text-xs lg:text-sm font-bold transition-all duration-300 ${
+                        <span className={`w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 rounded-full flex items-center justify-center text-xs lg:text-sm font-bold transition-all duration-300 ${
                           index === currentSlide
                             ? 'bg-primary-600 text-white'
                             : 'bg-white/20 text-white/70'
                         }`}>
                           {index + 1}
                         </span>
-                        <span className="text-xs lg:text-sm font-medium whitespace-nowrap">
+                        <span className="text-[10px] sm:text-xs lg:text-sm font-medium whitespace-nowrap">
                           {slide.slideLabel}
                         </span>
                       </button>
@@ -286,9 +286,9 @@ export default function HomePage() {
                   </div>
 
                   {/* Right Side - Controls */}
-                  <div className="flex items-center gap-3 lg:gap-4">
+                  <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
                     {/* Slide Counter */}
-                    <div className="flex items-center gap-1 text-white text-sm font-medium">
+                    <div className="flex items-center gap-1 text-white text-xs sm:text-sm font-medium">
                       <span>{currentSlide + 1}</span>
                       <span>/</span>
                       <span>{slides.length}</span>
