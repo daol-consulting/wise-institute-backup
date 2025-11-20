@@ -88,10 +88,10 @@ export default function HomePage() {
       return
     }
 
-    // Auto-advance slides every 5 seconds
+    // Auto-advance slides every 8 seconds
     autoSlideIntervalRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length)
-    }, 5000)
+    }, 8000)
 
     return () => {
       if (autoSlideIntervalRef.current) {
@@ -184,7 +184,7 @@ export default function HomePage() {
               return (
               <div
                 key={index}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
+                className={`absolute inset-0 transition-opacity duration-1500 ${
                   index === currentSlide 
                     ? 'opacity-100 z-[20]' 
                     : 'opacity-0 z-[10] pointer-events-none'
@@ -253,7 +253,7 @@ export default function HomePage() {
           </div>
 
           {/* Bottom Navigation Bar - above image */}
-          <div className="absolute bottom-0 left-0 right-0 z-[60]" data-aos="fade-up">
+          <div className="absolute bottom-0 left-0 right-0 w-full lg:w-[90%] lg:ml-[10%] z-[60]" data-aos="fade-up">
             {/* Bottom Navigation Bar */}
             <div className="relative bg-transparent text-white pointer-events-auto">
               <div className="container-custom pb-2 sm:pb-4 lg:pb-5">
