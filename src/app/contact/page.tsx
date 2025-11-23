@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Home, Mail, Phone, MapPin, Clock, Send, HelpCircle, Plus, Minus } from 'lucide-react'
 import PageHero from '../../components/PageHero'
 import CallToActionBanner from '@/components/CallToActionBanner'
 
-export default function ContactPage() {
+function ContactFormWithParams() {
   const searchParams = useSearchParams()
   const [formData, setFormData] = useState({
     name: '',
@@ -14,8 +14,6 @@ export default function ContactPage() {
     subject: '',
     message: ''
   })
-
-  const [openFAQ, setOpenFAQ] = useState<number[]>([])
 
   useEffect(() => {
     const program = searchParams.get('program')
@@ -58,6 +56,91 @@ export default function ContactPage() {
       // Handle error
     }
   }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+          Full Name *
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          value={formData.name}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+          placeholder="Dr. John Smith"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          Email Address *
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          value={formData.email}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+          placeholder="john@clinic.com"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+          Subject *
+        </label>
+        <select
+          id="subject"
+          name="subject"
+          required
+          value={formData.subject}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+        >
+          <option value="">Select a subject</option>
+          <option value="program-info">Program Information</option>
+          <option value="registration">Registration Inquiry</option>
+          <option value="schedule">Schedule Questions</option>
+          <option value="partnership">Partnership Opportunities</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+          Message *
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          rows={5}
+          required
+          value={formData.message}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+          placeholder="Tell us about your goals and any questions you have..."
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="btn-primary-lg w-full flex items-center justify-center space-x-2"
+      >
+        <Send className="h-4 w-4" />
+        <span>Send Message</span>
+      </button>
+    </form>
+  )
+}
+
+export default function ContactPage() {
+  const [openFAQ, setOpenFAQ] = useState<number[]>([])
 
   return (
     <div className="min-h-screen pt-16">
@@ -140,84 +223,9 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div data-aos="fade-left" className="rounded-3xl border border-secondary-100 bg-background p-6 sm:p-8 shadow-sm">
               <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-secondary mb-4 sm:mb-6">Send us a Message</h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    placeholder="Dr. John Smith"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    placeholder="john@clinic.com"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                    Subject *
-                  </label>
-                  <select
-                    id="subject"
-                    name="subject"
-                    required
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  >
-                    <option value="">Select a subject</option>
-                    <option value="program-info">Program Information</option>
-                    <option value="registration">Registration Inquiry</option>
-                    <option value="schedule">Schedule Questions</option>
-                    <option value="partnership">Partnership Opportunities</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    Message *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={5}
-                    required
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    placeholder="Tell us about your goals and any questions you have..."
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn-primary-lg w-full flex items-center justify-center space-x-2"
-                >
-                  <Send className="h-4 w-4" />
-                  <span>Send Message</span>
-                </button>
-              </form>
+              <Suspense fallback={<div className="text-center py-8 text-secondary-600">Loading form...</div>}>
+                <ContactFormWithParams />
+              </Suspense>
             </div>
           </div>
         </div>
