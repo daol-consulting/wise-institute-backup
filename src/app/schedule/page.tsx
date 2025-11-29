@@ -43,51 +43,31 @@ export default function SchedulePage() {
   const upcomingPrograms = [
     {
       id: 1,
-      title: "FOUNDATIONS OF IMPLANT DENTISTRY (Spring 2025)",
-      type: "Residency",
-      startDate: "March 15, 2025",
-      endDate: "March 22, 2025",
-      duration: "8 days",
-      capacity: "20 doctors",
-      location: "Vancouver, BC",
+      title: "PDC Live Surgery",
+      type: "Event",
+      startDate: "Friday, March 7, 2025",
+      endDate: "Friday, March 7, 2025",
+      duration: "2 hours",
+      capacity: "Open to all",
+      location: "PDC Live Stage",
       status: "Open",
-      description: "8-day / 56 CE credit residency with two live surgery days, daily pig jaw labs, and printed playbooks."
+      description: "Simple Extraction and Implant Placement with Bone Grafting. Join us at PDC at the live stage on Friday from 1:30PM - 3:30PM. Topics include: understanding key factors in surgical success, atraumatic tooth extraction, implant placement, bone grafting materials, and suturing techniques.",
+      price: "Free",
+      ceCredits: "CE Credit Available"
     },
     {
       id: 2,
-      title: "Live Surgery Study Club – Session 1",
-      type: "Study Club",
-      startDate: "April 5, 2025",
-      endDate: "April 7, 2025",
-      duration: "3 days",
-      capacity: "12 doctors",
-      location: "Vancouver, BC",
-      status: "Open",
-      description: "Real patient cases with direct mentorship from Dr. Lee and Dr. Yoon. Bring your own patients for surgery."
-    },
-    {
-      id: 3,
-      title: "Implant Residency - Fall 2025",
+      title: "FOUNDATIONS OF IMPLANT DENTISTRY",
       type: "Residency",
-      startDate: "September 12, 2025",
-      endDate: "September 19, 2025",
+      startDate: "March 22, 2025",
+      endDate: "March 29, 2025",
       duration: "8 days",
-      capacity: "20 doctors",
+      capacity: "Limited seats",
       location: "Vancouver, BC",
       status: "Open",
-      description: "8-day intensive program with 2 live surgery days, hands-on training with pig jaws, and comprehensive course materials."
-    },
-    {
-      id: 4,
-      title: "Live Surgery Study Club – Session 2",
-      type: "Study Club",
-      startDate: "October 18, 2025",
-      endDate: "October 20, 2025",
-      duration: "3 days",
-      capacity: "12 doctors",
-      location: "Vancouver, BC",
-      status: "Open",
-      description: "Real patient cases with direct mentorship from Dr. Lee and Dr. Yoon. Bring your own patients for surgery."
+      description: "Spring 2025 residency program. Topics include consultation, suture techniques, implant placement, sinus lift basics, and even live surgery. Comprehensive training with hands-on experience and direct mentorship.",
+      price: "From $7,500 + Tax",
+      ceCredits: "56 CE Credits"
     }
   ]
 
@@ -124,11 +104,14 @@ export default function SchedulePage() {
 
   const renderProgramCard = (program: typeof upcomingPrograms[number], index: number, isMobile = false) => {
     const isResidency = program.type === 'Residency'
+    const isEvent = program.type === 'Event'
     const accentGradient = isResidency
       ? 'from-primary-500/25 via-primary-500/10 to-transparent'
+      : isEvent
+      ? 'from-accent-500/25 via-accent-500/10 to-transparent'
       : 'from-secondary-500/25 via-secondary-500/10 to-transparent'
-    const badgeColor = isResidency ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'
-    const iconColor = isResidency ? 'text-primary' : 'text-secondary'
+    const badgeColor = isResidency ? 'bg-primary/10 text-primary' : isEvent ? 'bg-accent/10 text-accent' : 'bg-secondary/10 text-secondary'
+    const iconColor = isResidency ? 'text-primary' : isEvent ? 'text-accent' : 'text-secondary'
 
     return (
       <div
@@ -160,10 +143,6 @@ export default function SchedulePage() {
                 {program.status}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wide text-secondary-500">
-              <span>Cohort {index + 1}</span>
-              <span className="block h-px w-8 bg-secondary-200" />
-            </div>
           </div>
 
           <h3 className="text-xl sm:text-3xl font-extrabold text-secondary mb-2 sm:mb-3">{program.title}</h3>
@@ -177,7 +156,7 @@ export default function SchedulePage() {
               <div>
                 <p className="text-xs uppercase tracking-wide text-secondary-500">Dates</p>
                 <p className="text-sm font-medium text-secondary-900">
-                  {program.startDate} – {program.endDate}
+                  {program.startDate === program.endDate ? program.startDate : `${program.startDate} – ${program.endDate}`}
                 </p>
               </div>
             </div>
@@ -209,6 +188,23 @@ export default function SchedulePage() {
               </div>
             </div>
           </div>
+
+          {(program.price || program.ceCredits) && (
+            <div className="mb-6 sm:mb-8 flex flex-wrap gap-4">
+              {program.price && (
+                <div className="px-4 py-2 rounded-xl bg-primary/10 border border-primary/20">
+                  <p className="text-xs uppercase tracking-wide text-primary-600 font-semibold">Price</p>
+                  <p className="text-base font-bold text-primary">{program.price}</p>
+                </div>
+              )}
+              {program.ceCredits && (
+                <div className="px-4 py-2 rounded-xl bg-secondary/10 border border-secondary/20">
+                  <p className="text-xs uppercase tracking-wide text-secondary-600 font-semibold">CE Credits</p>
+                  <p className="text-base font-bold text-secondary">{program.ceCredits}</p>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-sm text-secondary-500">
             <div className="flex flex-col gap-0.5">
@@ -487,18 +483,15 @@ export default function SchedulePage() {
             <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-secondary-200 via-secondary-300 to-transparent" />
             <div className="space-y-8 sm:space-y-10">
               {[
-                { title: 'Residency — Spring Cohort', dates: 'March 15 – 22', status: 'Open', tag: 'Residency' },
-                { title: 'Study Club — Session 1', dates: 'April 5 – 7', status: 'Open', tag: 'Study Club' },
-                { title: 'Residency — Fall Cohort', dates: 'September 12 – 19', status: 'Open', tag: 'Residency' },
-                { title: 'Study Club — Session 2', dates: 'October 18 – 20', status: 'Open', tag: 'Study Club' },
-                { title: 'Study Club — Session 3', dates: 'December 6 – 8', status: 'Waitlist', tag: 'Study Club' },
+                { title: 'PDC Live Surgery', dates: 'March 7', status: 'Open', tag: 'Event' },
+                { title: 'Foundations of Implant Dentistry', dates: 'March 22 – 29', status: 'Open', tag: 'Residency' },
               ].map((item, idx) => {
                 const isLeft = idx % 2 === 0
                 return (
                   <div key={item.title} className="relative" data-aos="fade-up" data-aos-delay={idx * 80}>
                     {/* Timeline dot */}
                     <div className={`absolute left-1/2 -translate-x-1/2 top-6 w-4 h-4 rounded-full border-2 border-white shadow-lg z-10 ${
-                      item.tag === 'Residency' ? 'bg-primary-500' : 'bg-secondary-500'
+                      item.tag === 'Residency' ? 'bg-primary-500' : item.tag === 'Event' ? 'bg-accent-500' : 'bg-secondary-500'
                     }`} />
                     
                     {/* Card - Alternating left/right */}
@@ -510,7 +503,7 @@ export default function SchedulePage() {
                               <div className="flex items-center gap-3 mb-3 justify-end">
                                 <span
                                   className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                    item.tag === 'Residency' ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'
+                                    item.tag === 'Residency' ? 'bg-primary/10 text-primary' : item.tag === 'Event' ? 'bg-accent/10 text-accent' : 'bg-secondary/10 text-secondary'
                                   }`}
                                 >
                                   {item.tag}
@@ -542,7 +535,7 @@ export default function SchedulePage() {
                               <div className="flex items-center gap-3 mb-3 justify-start">
                                 <span
                                   className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                    item.tag === 'Residency' ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'
+                                    item.tag === 'Residency' ? 'bg-primary/10 text-primary' : item.tag === 'Event' ? 'bg-accent/10 text-accent' : 'bg-secondary/10 text-secondary'
                                   }`}
                                 >
                                   {item.tag}
@@ -578,11 +571,8 @@ export default function SchedulePage() {
             <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-secondary-200 via-secondary-300 to-transparent" />
             <div className="space-y-6">
               {[
-                { title: 'Residency — Spring Cohort', dates: 'March 15 – 22', status: 'Open', tag: 'Residency' },
-                { title: 'Study Club — Session 1', dates: 'April 5 – 7', status: 'Open', tag: 'Study Club' },
-                { title: 'Residency — Fall Cohort', dates: 'September 12 – 19', status: 'Open', tag: 'Residency' },
-                { title: 'Study Club — Session 2', dates: 'October 18 – 20', status: 'Open', tag: 'Study Club' },
-                { title: 'Study Club — Session 3', dates: 'December 6 – 8', status: 'Waitlist', tag: 'Study Club' },
+                { title: 'PDC Live Surgery', dates: 'March 7', status: 'Open', tag: 'Event' },
+                { title: 'Foundations of Implant Dentistry', dates: 'March 22 – 29', status: 'Open', tag: 'Residency' },
               ].map((item, idx) => {
                 const isLeft = idx % 2 === 0
                 return (

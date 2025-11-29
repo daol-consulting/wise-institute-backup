@@ -157,6 +157,152 @@ export default function ContactPage() {
         ]}
       />
 
+      {/* PDC Live Surgery Event Section */}
+      <section className="py-12 sm:py-16 bg-gradient-to-br from-primary-50 to-secondary-50">
+        <div className="container-custom">
+          <div data-aos="fade-up" className="rounded-3xl border border-primary/20 bg-white p-6 sm:p-8 lg:p-12 shadow-lg">
+            <div className="text-center mb-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary mb-3">Upcoming Event</p>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary mb-4">
+                PDC Live Surgery
+              </h2>
+              <p className="text-lg sm:text-xl text-secondary-700 mb-2">
+                Come join us at PDC at the live stage on Friday from 1:30PM - 3:30PM.
+              </p>
+            </div>
+
+            <div className="space-y-6 sm:space-y-8">
+              <div>
+                <h3 className="text-xl sm:text-2xl font-bold text-secondary mb-4">
+                  Simple Extraction and Implant Placement with Bone Grafting:
+                </h3>
+                <ul className="space-y-3 text-secondary-700">
+                  <li className="flex items-start gap-3">
+                    <span className="text-primary font-bold flex-shrink-0">#1:</span>
+                    <span>Understanding key factors in surgical success in placing implants in healed and extraction sites.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-primary font-bold flex-shrink-0">#2:</span>
+                    <span>Understanding basic principles of atraumatic tooth extraction.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-primary font-bold flex-shrink-0">#3:</span>
+                    <span>Understanding basic principles of implant placement.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-primary font-bold flex-shrink-0">#4:</span>
+                    <span>Understanding basic principles of selecting and applying various bone grafting materials.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-primary font-bold flex-shrink-0">#5:</span>
+                    <span>Understanding basic principles of suturing and various suturing techniques.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="pt-4 border-t border-secondary-200">
+                <div className="flex flex-wrap gap-2 text-sm text-secondary-600">
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#pdc</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#pdc2025</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#hiossen</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#osstem</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#denall</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#implant</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#dentalimplant</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#dental</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#dentist</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#dentistry</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#implantdentistry</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#implantology</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#perio</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#periodontist</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#prosthodontist</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#aiceducation</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#cecredit</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#locator</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#allonx</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#fullarch</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#dentallab</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#dentaltechnician</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#prf</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#오스템</span>
+                  <span className="px-3 py-1 bg-secondary-100 rounded-full">#임플란트</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Foundations of Implant Dentistry Section */}
+      <section className="py-12 sm:py-16 bg-white">
+        <div className="container-custom">
+          <div data-aos="fade-up" className="rounded-3xl border border-secondary/20 bg-gradient-to-br from-white via-primary/5 to-white p-6 sm:p-8 lg:p-12 shadow-lg">
+            <div className="text-center mb-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary mb-3">Spring 2025</p>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary mb-4">
+                FOUNDATIONS OF IMPLANT DENTISTRY
+              </h2>
+              <p className="text-lg sm:text-xl text-secondary-700 mb-2">
+                Vancouver, BC | Starts March 22, 2025
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 mt-4">
+                <div className="px-4 py-2 rounded-xl bg-primary/10 border border-primary/20">
+                  <p className="text-xs uppercase tracking-wide text-primary-600 font-semibold">CE Credits</p>
+                  <p className="text-base font-bold text-primary">56 CE</p>
+                </div>
+                <div className="px-4 py-2 rounded-xl bg-secondary/10 border border-secondary/20">
+                  <p className="text-xs uppercase tracking-wide text-secondary-600 font-semibold">Price</p>
+                  <p className="text-base font-bold text-secondary">From $7,500 + Tax</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-6 sm:space-y-8">
+              <div>
+                <h3 className="text-xl sm:text-2xl font-bold text-secondary mb-4">
+                  Course Topics Include:
+                </h3>
+                <ul className="space-y-3 text-secondary-700">
+                  <li className="flex items-start gap-3">
+                    <span className="text-primary font-bold flex-shrink-0">•</span>
+                    <span>Consultation</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-primary font-bold flex-shrink-0">•</span>
+                    <span>Suture techniques</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-primary font-bold flex-shrink-0">•</span>
+                    <span>Implant placement</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-primary font-bold flex-shrink-0">•</span>
+                    <span>Sinus lift basics</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-primary font-bold flex-shrink-0">•</span>
+                    <span>Live surgery</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="pt-4 border-t border-secondary-200">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-secondary-600">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-secondary-700">Co-led by:</span>
+                    <span>Dr. Chris Lee (DMD, B.SC. PHARM)</span>
+                    <span className="mx-2">•</span>
+                    <span>Dr. Stephen Yoon (DMD, B.SC)</span>
+                  </div>
+                </div>
+                <p className="text-center text-sm text-secondary-500 mt-2">Powered by HiOssen AIC Education</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Information */}
       <section className="py-12 sm:py-16 bg-white">
         <div className="container-custom">
