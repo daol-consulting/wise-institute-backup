@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Menu, X, ArrowRight, Instagram } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Menu, X, ArrowRight, Instagram, LogOut, Shield } from 'lucide-react'
 import Logo from './Logo'
+import { checkAdminSession } from '@/lib/admin'
 
 const navigation = [
   { 
@@ -21,6 +23,7 @@ const navigation = [
     megaMenu: [
       { name: 'About Us', href: '/about' },
       { name: 'Our Directors', href: '/directors' },
+      { name: 'Contact Us', href: '/contact' },
     ],
   },
   { 
@@ -28,16 +31,19 @@ const navigation = [
     href: '/programs',
     megaMenu: [
       { name: 'Residency Highlights', href: '/programs' },
-      { name: 'Contact Us', href: '/contact' },
+      { name: 'Gallery', href: '/gallery' },
       { name: 'News', href: '/news' },
+      { name: 'Admin', href: '/login', adminOnly: false },
     ]
   },
   { name: 'Registration', href: '/schedule' },
 ]
 
 export default function Navbar() {
+  const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,6 +52,32 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const adminStatus = await checkAdminSession()
+      setIsAdmin(adminStatus)
+    }
+    checkAdmin()
+    
+    // 주기적으로 체크 (세션 만료 감지)
+    const interval = setInterval(checkAdmin, 60000) // 1분마다 체크
+    return () => clearInterval(interval)
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      })
+      setIsAdmin(false)
+      router.push('/')
+      router.refresh()
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+  }
 
   return (
     <nav className={`fixed top-0 w-full z-[99999] transition-all duration-300 bg-white ${
@@ -96,17 +128,28 @@ export default function Navbar() {
                 {navigation.filter(item => item.megaMenu).map((item) => (
                   <div key={item.name} className="col-span-1">
                     <h3 className="text-lg font-bold text-secondary-900 mb-4">{item.name}</h3>
-                    <ul className="space-y-1">
-                      {item.megaMenu?.map((menuItem) => (
-                        <li key={menuItem.name}>
-                          <Link
-                            href={menuItem.href}
-                            className="block px-4 py-2.5 text-base text-secondary-700 hover:text-primary-600 hover:bg-primary-50 rounded transition-colors"
-                          >
-                            {menuItem.name}
-                          </Link>
-                        </li>
-                      ))}
+                    <ul className="space-y-0 flex flex-col">
+                      {item.megaMenu?.map((menuItem) => {
+                        // Admin 링크는 로그인 상태에 따라 텍스트 변경
+                        const isAdminLink = menuItem.name === 'Admin';
+                        const displayText = isAdminLink && isAdmin ? 'Admin Panel' : menuItem.name;
+                        const adminHref = isAdminLink && isAdmin ? '/admin' : menuItem.href;
+                        
+                        return (
+                          <li key={menuItem.name} className="w-full">
+                            <Link
+                              href={adminHref}
+                              className={`block w-full px-0 py-2.5 text-base rounded transition-colors text-left ${
+                                isAdminLink && isAdmin
+                                  ? 'text-primary-600 hover:text-primary-700 hover:bg-primary-50 font-semibold'
+                                  : 'text-secondary-700 hover:text-primary-600 hover:bg-primary-50'
+                              }`}
+                            >
+                              {displayText}
+                            </Link>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 ))}
@@ -120,6 +163,24 @@ export default function Navbar() {
 
         {/* Right Section - Instagram Link and CTA Button */}
         <aside className="flex items-stretch ml-auto flex-shrink-0">
+          {/* Admin Status Indicator - Desktop */}
+          {isAdmin && (
+            <div className="hidden lg:flex items-center px-3 gap-2">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-200 rounded-lg">
+                <Shield className="w-4 h-4 text-green-600" />
+                <span className="text-xs font-semibold text-green-700">Admin</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="p-2 text-secondary-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                aria-label="Logout"
+                title="Logout"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
           {/* Instagram Link */}
           <div className="side-link hidden lg:flex items-center px-4 lg:px-6">
             <a
@@ -175,6 +236,26 @@ export default function Navbar() {
           {/* Header Section with Instagram and View Schedule */}
           <div className="border-b border-secondary-200">
             <div className="flex items-stretch h-14">
+              {/* Admin Status Indicator - Mobile */}
+              {isAdmin && (
+                <div className="flex items-center px-3 gap-2 border-r border-secondary-200">
+                  <div className="flex items-center gap-1.5 px-2 py-1 bg-green-50 border border-green-200 rounded">
+                    <Shield className="w-3.5 h-3.5 text-green-600" />
+                    <span className="text-xs font-semibold text-green-700">Admin</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      handleLogout()
+                      setMobileMenuOpen(false)
+                    }}
+                    className="p-1.5 text-secondary-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                    aria-label="Logout"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+
               {/* Instagram Link */}
               <div className="flex items-center px-4 sm:px-6">
                 <a
@@ -257,6 +338,13 @@ export default function Navbar() {
                 >
                   Our Directors
                 </Link>
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-3 py-2 text-sm text-secondary-700 hover:text-primary-600 hover:bg-primary-50 rounded transition-colors"
+                >
+                  Contact Us
+                </Link>
               </div>
             </div>
 
@@ -272,11 +360,11 @@ export default function Navbar() {
                   Residency Highlights
                 </Link>
                 <Link
-                  href="/contact"
+                  href="/gallery"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block px-3 py-2 text-sm text-secondary-700 hover:text-primary-600 hover:bg-primary-50 rounded transition-colors"
                 >
-                  Contact Us
+                  Gallery
                 </Link>
                 <Link
                   href="/news"
@@ -284,6 +372,17 @@ export default function Navbar() {
                   className="block px-3 py-2 text-sm text-secondary-700 hover:text-primary-600 hover:bg-primary-50 rounded transition-colors"
                 >
                   News
+                </Link>
+                <Link
+                  href={isAdmin ? '/admin' : '/login'}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-3 py-2 text-sm rounded transition-colors ${
+                    isAdmin
+                      ? 'text-primary-600 hover:text-primary-700 hover:bg-primary-50 font-semibold'
+                      : 'text-secondary-700 hover:text-primary-600 hover:bg-primary-50'
+                  }`}
+                >
+                  {isAdmin ? 'Admin Panel' : 'Admin'}
                 </Link>
               </div>
             </div>

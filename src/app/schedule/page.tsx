@@ -499,29 +499,35 @@ export default function SchedulePage() {
                       {isLeft ? (
                         <>
                           <div className="pr-8">
-                            <div className="bg-white rounded-2xl border border-secondary-100 shadow-md p-5 sm:p-6 text-right ml-auto" style={{ maxWidth: '500px' }}>
-                              <div className="flex items-center gap-3 mb-3 justify-end">
-                                <span
-                                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                    item.tag === 'Residency' ? 'bg-primary/10 text-primary' : item.tag === 'Event' ? 'bg-accent/10 text-accent' : 'bg-secondary/10 text-secondary'
-                                  }`}
-                                >
-                                  {item.tag}
-                                </span>
-                                <span
-                                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                    item.status === 'Open'
-                                      ? 'bg-emerald-100 text-emerald-700'
-                                      : 'bg-amber-100 text-amber-700'
-                                  }`}
-                                >
-                                  {item.status}
-                                </span>
-                              </div>
-                              <h3 className="text-lg sm:text-xl font-bold text-secondary mb-2">{item.title}</h3>
-                              <div className="flex items-center gap-2 justify-end">
-                                <Calendar className="h-4 w-4 text-secondary-400" />
-                                <p className="text-secondary-600 text-sm font-medium">{item.dates}</p>
+                            <div className="bg-white rounded-2xl border border-secondary-100 shadow-md p-5 sm:p-6 mx-auto" style={{ maxWidth: '500px' }}>
+                              <div className="flex flex-col items-center gap-2 text-center">
+                                <div className="flex items-center gap-2 justify-center mb-1">
+                                  <span
+                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                      item.tag === 'Residency'
+                                        ? 'bg-primary/10 text-primary'
+                                        : item.tag === 'Event'
+                                          ? 'bg-accent/10 text-accent'
+                                          : 'bg-secondary/10 text-secondary'
+                                    }`}
+                                  >
+                                    {item.tag}
+                                  </span>
+                                  <span
+                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                      item.status === 'Open'
+                                        ? 'bg-emerald-100 text-emerald-700'
+                                        : 'bg-amber-100 text-amber-700'
+                                    }`}
+                                  >
+                                    {item.status}
+                                  </span>
+                                </div>
+                                <h3 className="text-lg sm:text-xl font-bold text-secondary">{item.title}</h3>
+                                <div className="flex items-center gap-2 justify-center text-secondary-600 text-sm font-medium">
+                                  <Calendar className="h-4 w-4 text-secondary-400" />
+                                  <p>{item.dates}</p>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -531,29 +537,35 @@ export default function SchedulePage() {
                         <>
                           <div></div>
                           <div className="pl-8">
-                            <div className="bg-white rounded-2xl border border-secondary-100 shadow-md p-5 sm:p-6 text-left mr-auto" style={{ maxWidth: '500px' }}>
-                              <div className="flex items-center gap-3 mb-3 justify-start">
-                                <span
-                                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                    item.tag === 'Residency' ? 'bg-primary/10 text-primary' : item.tag === 'Event' ? 'bg-accent/10 text-accent' : 'bg-secondary/10 text-secondary'
-                                  }`}
-                                >
-                                  {item.tag}
-                                </span>
-                                <span
-                                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                    item.status === 'Open'
-                                      ? 'bg-emerald-100 text-emerald-700'
-                                      : 'bg-amber-100 text-amber-700'
-                                  }`}
-                                >
-                                  {item.status}
-                                </span>
-                              </div>
-                              <h3 className="text-lg sm:text-xl font-bold text-secondary mb-2">{item.title}</h3>
-                              <div className="flex items-center gap-2 justify-start">
-                                <Calendar className="h-4 w-4 text-secondary-400" />
-                                <p className="text-secondary-600 text-sm font-medium">{item.dates}</p>
+                            <div className="bg-white rounded-2xl border border-secondary-100 shadow-md p-5 sm:p-6 mx-auto" style={{ maxWidth: '500px' }}>
+                              <div className="flex flex-col items-center gap-2 text-center">
+                                <div className="flex items-center gap-2 justify-center mb-1">
+                                  <span
+                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                      item.tag === 'Residency'
+                                        ? 'bg-primary/10 text-primary'
+                                        : item.tag === 'Event'
+                                          ? 'bg-accent/10 text-accent'
+                                          : 'bg-secondary/10 text-secondary'
+                                    }`}
+                                  >
+                                    {item.tag}
+                                  </span>
+                                  <span
+                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                      item.status === 'Open'
+                                        ? 'bg-emerald-100 text-emerald-700'
+                                        : 'bg-amber-100 text-amber-700'
+                                    }`}
+                                  >
+                                    {item.status}
+                                  </span>
+                                </div>
+                                <h3 className="text-lg sm:text-xl font-bold text-secondary">{item.title}</h3>
+                                <div className="flex items-center gap-2 justify-center text-secondary-600 text-sm font-medium">
+                                  <Calendar className="h-4 w-4 text-secondary-400" />
+                                  <p>{item.dates}</p>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -587,29 +599,31 @@ export default function SchedulePage() {
                       {isLeft ? (
                         <>
                           <div className="pr-3">
-                            <div className="bg-white rounded-2xl border border-secondary-100 shadow-md p-4 text-right ml-auto" style={{ maxWidth: '100%' }}>
-                              <div className="flex items-center gap-2 mb-2 justify-end flex-wrap">
-                                <span
-                                  className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                    item.tag === 'Residency' ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'
-                                  }`}
-                                >
-                                  {item.tag}
-                                </span>
-                                <span
-                                  className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                    item.status === 'Open'
-                                      ? 'bg-emerald-100 text-emerald-700'
-                                      : 'bg-amber-100 text-amber-700'
-                                  }`}
-                                >
-                                  {item.status}
-                                </span>
-                              </div>
-                              <h3 className="text-sm font-bold text-secondary mb-2">{item.title}</h3>
-                              <div className="flex items-center gap-1.5 justify-end">
-                                <Calendar className="h-3.5 w-3.5 text-secondary-400" />
-                                <p className="text-xs text-secondary-600 font-medium">{item.dates}</p>
+                            <div className="bg-white rounded-2xl border border-secondary-100 shadow-md p-4 mx-auto" style={{ maxWidth: '100%' }}>
+                              <div className="flex flex-col items-center gap-1.5 text-center">
+                                <div className="flex items-center gap-1.5 justify-center flex-wrap mb-0.5">
+                                  <span
+                                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                      item.tag === 'Residency' ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'
+                                    }`}
+                                  >
+                                    {item.tag}
+                                  </span>
+                                  <span
+                                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                      item.status === 'Open'
+                                        ? 'bg-emerald-100 text-emerald-700'
+                                        : 'bg-amber-100 text-amber-700'
+                                    }`}
+                                  >
+                                    {item.status}
+                                  </span>
+                                </div>
+                                <h3 className="text-sm font-bold text-secondary">{item.title}</h3>
+                                <div className="flex items-center gap-1.5 justify-center text-xs text-secondary-600 font-medium">
+                                  <Calendar className="h-3.5 w-3.5 text-secondary-400" />
+                                  <p>{item.dates}</p>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -619,29 +633,31 @@ export default function SchedulePage() {
                         <>
                           <div></div>
                           <div className="pl-3">
-                            <div className="bg-white rounded-2xl border border-secondary-100 shadow-md p-4 text-left mr-auto" style={{ maxWidth: '100%' }}>
-                              <div className="flex items-center gap-2 mb-2 justify-start flex-wrap">
-                                <span
-                                  className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                    item.tag === 'Residency' ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'
-                                  }`}
-                                >
-                                  {item.tag}
-                                </span>
-                                <span
-                                  className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                    item.status === 'Open'
-                                      ? 'bg-emerald-100 text-emerald-700'
-                                      : 'bg-amber-100 text-amber-700'
-                                  }`}
-                                >
-                                  {item.status}
-                                </span>
-                              </div>
-                              <h3 className="text-sm font-bold text-secondary mb-2">{item.title}</h3>
-                              <div className="flex items-center gap-1.5 justify-start">
-                                <Calendar className="h-3.5 w-3.5 text-secondary-400" />
-                                <p className="text-xs text-secondary-600 font-medium">{item.dates}</p>
+                            <div className="bg-white rounded-2xl border border-secondary-100 shadow-md p-4 mx-auto" style={{ maxWidth: '100%' }}>
+                              <div className="flex flex-col items-center gap-1.5 text-center">
+                                <div className="flex items-center gap-1.5 justify-center flex-wrap mb-0.5">
+                                  <span
+                                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                      item.tag === 'Residency' ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'
+                                    }`}
+                                  >
+                                    {item.tag}
+                                  </span>
+                                  <span
+                                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                      item.status === 'Open'
+                                        ? 'bg-emerald-100 text-emerald-700'
+                                        : 'bg-amber-100 text-amber-700'
+                                    }`}
+                                  >
+                                    {item.status}
+                                  </span>
+                                </div>
+                                <h3 className="text-sm font-bold text-secondary">{item.title}</h3>
+                                <div className="flex items-center gap-1.5 justify-center text-xs text-secondary-600 font-medium">
+                                  <Calendar className="h-3.5 w-3.5 text-secondary-400" />
+                                  <p>{item.dates}</p>
+                                </div>
                               </div>
                             </div>
                           </div>

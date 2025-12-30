@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Plus, ChevronLeft, ChevronRight, ArrowRight, Award, Users } from 'lucide-react'
+import { Plus, ChevronLeft, ChevronRight, ArrowRight, Award, Users, Edit2 } from 'lucide-react'
 
 type InfoBlock = {
   title: string
@@ -11,8 +11,10 @@ type InfoBlock = {
 
 type StoryItem = {
   imageSrc: string
+  imageType?: 'image' | 'video'
   caption: string
   href?: string
+  onEdit?: () => void
 }
 
 type FeaturedProgram = {
@@ -167,19 +169,43 @@ export default function ProgramInfoSection({
           <div className="flex flex-col lg:col-span-4" data-aos="fade-left">
             {/* Image container - 70% of left content height, max 500px */}
             <div 
-              className="relative overflow-hidden border border-secondary-100 w-full"
+              className="relative overflow-hidden border border-secondary-100 w-full group/image"
               style={{ 
                 height: imageHeight ? `${imageHeight}px` : undefined,
                 minHeight: imageHeight ? undefined : '250px',
                 maxHeight: '500px'
               }}
             >
+              {storyItems[currentStory].imageType === 'video' ? (
+                <video 
+                  src={storyItems[currentStory].imageSrc} 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="w-full h-full object-cover" 
+                />
+              ) : (
               <Image
                 src={storyItems[currentStory].imageSrc}
                 alt={storyItems[currentStory].caption}
                 fill
                 className="object-cover"
               />
+              )}
+              {storyItems[currentStory].onEdit && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    storyItems[currentStory].onEdit?.();
+                  }}
+                  className="absolute top-2 right-2 p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors shadow-lg opacity-0 group-hover/image:opacity-100 z-10"
+                  aria-label="Edit image"
+                >
+                  <Edit2 className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
 
             {/* Caption and controls below image */}

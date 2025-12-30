@@ -12,6 +12,93 @@ import StatsSection from '@/components/StatsSection'
 import FeatureLinksSection from '@/components/FeatureLinksSection'
 import ProgramInfoSection from '@/components/ProgramInfoSection'
 import NewsSection from '@/components/NewsSection'
+import { NewsItem } from '@/lib/news'
+import { checkAdminSession } from '@/lib/admin'
+
+function NewsSectionWithCMS({ isAdmin, onEditNews }: { isAdmin: boolean; onEditNews: (newsItem: NewsItem) => void }) {
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadNews = async () => {
+      try {
+        const response = await fetch('/api/news');
+        if (response.ok) {
+          const data = await response.json();
+          // 최대 4개만 표시
+          const items = data.slice(0, 4).map((item: NewsItem) => ({
+            ...item,
+            onEdit: isAdmin ? () => onEditNews(item) : undefined,
+          }));
+          setNewsItems(items);
+        }
+      } catch (error) {
+        console.error('Error loading news:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadNews();
+  }, [isAdmin, onEditNews]);
+
+  // 기본 fallback 데이터
+  const defaultNewsItems = [
+    {
+      category: 'Institute News',
+      categoryColor: 'blue' as const,
+      title: 'New 2025 Implant Residency Program Dates Announced',
+      description: 'WISE Institute is pleased to announce the 2025 schedule for our comprehensive 8-day implant residency program. Registration opens next month.',
+      date: '2025-01-15',
+      href: '/news'
+    },
+    {
+      category: 'Press Release',
+      categoryColor: 'teal' as const,
+      title: 'WISE Institute Partners with HiOssen for Enhanced Training',
+      description: 'We are excited to announce our continued collaboration with HiOssen AIC Education, bringing advanced implant training to general dentists across Western Canada.',
+      date: '2025-12-10',
+      href: '/news'
+    },
+    {
+      category: 'Institute News',
+      categoryColor: 'blue' as const,
+      title: 'Record Number of Doctors Complete 2025 Residency Program',
+      description: 'Over 80 doctors completed our implant residency program this year, with 200+ hours of hands-on training and live surgery sessions.',
+      date: '2025-11-20',
+      href: '/news'
+    },
+    {
+      category: 'Press Release',
+      categoryColor: 'teal' as const,
+      title: 'WISE Institute Live Surgery Featured at PDC 2025',
+      description: 'Dr. Chris Lee and Dr. Stephen Yoon presented live surgery demonstrations at the Pacific Dental Conference, showcasing our hands-on training approach.',
+      date: '2025-10-05',
+      href: '/news'
+    }
+  ];
+
+  const displayItems = newsItems.length > 0 
+    ? newsItems 
+    : defaultNewsItems.map(item => ({
+        ...item,
+        onEdit: isAdmin ? () => {
+          // 기본 뉴스는 편집 불가 (CMS에 없음)
+        } : undefined,
+      }));
+
+  return (
+    <div data-aos="fade-up" data-aos-delay="200">
+      <NewsSection
+        eyebrow="NEWS"
+        title="WISE Institute News"
+        description="Stay updated with the latest updates, announcements, and highlights from WISE Institute."
+        newsItems={displayItems}
+        viewAllText="View all news"
+        viewAllHref="/news"
+      />
+    </div>
+  );
+}
 
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -21,25 +108,60 @@ export default function HomePage() {
   // Campaign slider state (second section)
   const [campaignIndex, setCampaignIndex] = useState(0)
 
-  const campaignItems = [
-    { src: '/gallery/wise.webp', title: 'Implant Residency Campaign' },
-    { src: '/gallery/wise2.webp', title: 'Live Surgery Study Club' },
-    { src: '/gallery/wise3.webp', title: 'Residency Highlights' },
-    { src: '/gallery/wise4.webp', title: 'Mentorship & Support' },
-    { src: '/gallery/wise5.webp', title: 'Hands-on Every Day' },
-    { src: '/gallery/wise6.webp', title: 'Course Materials' },
-    { src: '/gallery/wise7.webp', title: 'Advanced Training Resources' },
+  // Default fallback data
+  const defaultCampaignItems = [
+    { 
+      src: '/gallery/wise.webp', 
+      title: 'Implant Residency Campaign',
+      description: 'Join our comprehensive 8-day implant residency program designed for general dentists. Experience hands-on training with real patient cases and expert mentorship.',
+      ctaText: 'LEARN MORE',
+      ctaLink: '/programs'
+    },
+    { 
+      src: '/gallery/wise2.webp', 
+      title: 'Live Surgery Study Club',
+      description: 'Participate in our live surgery study club sessions where you can observe and learn from real surgical procedures performed by experienced implant specialists.',
+      ctaText: 'VIEW SCHEDULE',
+      ctaLink: '/schedule'
+    },
+    { 
+      src: '/gallery/wise3.webp', 
+      title: 'Residency Highlights',
+      description: 'Discover the comprehensive training experience at WISE Institute. From daily hands-on sessions to live surgery days, see what makes our program unique.',
+      ctaText: 'EXPLORE GALLERY',
+      ctaLink: '/gallery'
+    },
+    { 
+      src: '/gallery/wise4.webp', 
+      title: 'Mentorship & Support',
+      description: 'Join our residency to build solid surgical fundamentals with daily hands-on sessions and two live surgery days. Learn efficiently and bring predictable results to your clinic.',
+      ctaText: 'APPLY NOW',
+      ctaLink: '/schedule'
+    },
+    { 
+      src: '/gallery/wise5.webp', 
+      title: 'Hands-on Every Day',
+      description: 'Experience daily hands-on training sessions that reinforce your learning. Practice implant techniques with expert guidance in a supportive learning environment.',
+      ctaText: 'VIEW PROGRAMS',
+      ctaLink: '/programs'
+    },
+    { 
+      src: '/gallery/wise6.webp', 
+      title: 'Course Materials',
+      description: 'Access comprehensive course materials and resources designed to support your learning journey. From surgical guides to clinical protocols, everything you need is included.',
+      ctaText: 'LEARN MORE',
+      ctaLink: '/programs'
+    },
+    { 
+      src: '/gallery/wise7.webp', 
+      title: 'Advanced Training Resources',
+      description: 'Benefit from our extensive collection of advanced training resources, including video libraries, case studies, and ongoing support from our expert faculty.',
+      ctaText: 'GET STARTED',
+      ctaLink: '/schedule'
+    },
   ]
 
-  const nextCampaign = () => {
-    setCampaignIndex((i) => (i + 1) % campaignItems.length)
-  }
-  
-  const prevCampaign = () => {
-    setCampaignIndex((i) => (i - 1 + campaignItems.length) % campaignItems.length)
-  }
-
-  const slides = [
+  const defaultSlides = [
     {
       subtitle: "From hands-on training to surgical excellence",
       title: "WISE Institute",
@@ -47,8 +169,8 @@ export default function HomePage() {
       ctaText: "LEARN MORE",
       ctaLink: "/about",
       slideLabel: "WISE Institute Education",
-      image: "/gallery/hero.png",
-      desktopImage: "/gallery/hero.webp"
+      image: "/gallery/Wise_Institute_Education.png",
+      desktopImage: "/gallery/Wise_Institute_Education.png"
     },
     {
       subtitle: "Hands-on surgical implant education",
@@ -69,6 +191,148 @@ export default function HomePage() {
       image: "/gallery/wise3.webp"
     }
   ]
+
+  const [slides, setSlides] = useState(defaultSlides)
+  const [campaignItems, setCampaignItems] = useState(defaultCampaignItems)
+  const [isAdmin, setIsAdmin] = useState(false)
+  
+  // Additional image states with fallback
+  const [statsImage, setStatsImage] = useState('/gallery/wise3.webp')
+  const [statsImageType, setStatsImageType] = useState<'image' | 'video'>('image')
+  const [featureLeftImage, setFeatureLeftImage] = useState('/gallery/gallery.jpg')
+  const [featureLeftImageType, setFeatureLeftImageType] = useState<'image' | 'video'>('image')
+  const [featureRightImage, setFeatureRightImage] = useState('/gallery/wise2.webp')
+  const [featureRightImageType, setFeatureRightImageType] = useState<'image' | 'video'>('image')
+  const [programStoryImages, setProgramStoryImages] = useState(['/gallery/wise2.webp', '/gallery/wise.webp', '/gallery/wise3.webp'])
+  const [programStoryImageTypes, setProgramStoryImageTypes] = useState<Array<'image' | 'video'>>(['image', 'image', 'image'])
+
+  // Check admin status and load media items
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const adminStatus = await checkAdminSession();
+      setIsAdmin(adminStatus);
+      
+    };
+    checkAdmin();
+  }, []);
+
+  // Load landing page settings from CMS
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const response = await fetch(`/api/landing-page-settings?t=${Date.now()}`, {
+          cache: 'no-store',
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Loaded landing page settings:', data);
+          
+          if (data.settings) {
+            // Hero slides 업데이트
+            if (data.settings.heroSlides && data.settings.heroSlides.length > 0) {
+              setSlides(data.settings.heroSlides);
+            }
+            
+            // Campaign items 업데이트
+            if (data.settings.campaignItems && data.settings.campaignItems.length > 0) {
+              setCampaignItems(data.settings.campaignItems);
+            }
+            
+            // Stats image 업데이트 (항상 업데이트, 없으면 fallback 사용)
+            setStatsImage(data.settings.statsImage || '/gallery/wise3.webp');
+            setStatsImageType(data.settings.statsImageType || 'image');
+            
+            // Feature left image 업데이트
+            setFeatureLeftImage(data.settings.featureLeftImage || '/gallery/gallery.jpg');
+            setFeatureLeftImageType(data.settings.featureLeftImageType || 'image');
+            
+            // Feature right image 업데이트
+            setFeatureRightImage(data.settings.featureRightImage || '/gallery/wise2.webp');
+            setFeatureRightImageType(data.settings.featureRightImageType || 'image');
+            
+            // Program story images 업데이트
+            if (data.settings.programStoryImages && data.settings.programStoryImages.length > 0) {
+              setProgramStoryImages(data.settings.programStoryImages);
+              setProgramStoryImageTypes(data.settings.programStoryImageTypes || data.settings.programStoryImages.map(() => 'image'));
+            } else {
+              // Fallback 사용
+              setProgramStoryImages(['/gallery/wise2.webp', '/gallery/wise.webp', '/gallery/wise3.webp']);
+              setProgramStoryImageTypes(['image', 'image', 'image']);
+            }
+          } else {
+            // settings가 null이면 fallback 사용
+            console.log('No settings found, using fallback images');
+          }
+        }
+      } catch (error) {
+        console.error('Error loading landing page settings:', error);
+      }
+    };
+    loadSettings();
+  }, []);
+
+  const handleRefreshLandingSettings = async () => {
+    try {
+      // 캐시 방지를 위해 timestamp 추가
+      const response = await fetch(`/api/landing-page-settings?t=${Date.now()}`, {
+        cache: 'no-store',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Refreshed landing page settings:', data);
+        
+        if (data.settings) {
+          // Hero slides 업데이트
+          if (data.settings.heroSlides && data.settings.heroSlides.length > 0) {
+            setSlides(data.settings.heroSlides);
+          }
+          
+          // Campaign items 업데이트
+          if (data.settings.campaignItems && data.settings.campaignItems.length > 0) {
+            setCampaignItems(data.settings.campaignItems);
+          }
+          
+          // Stats image 업데이트 (항상 업데이트, 없으면 fallback 사용)
+          setStatsImage(data.settings.statsImage || '/gallery/wise3.webp');
+          setStatsImageType(data.settings.statsImageType || 'image');
+          
+          // Feature left image 업데이트
+          setFeatureLeftImage(data.settings.featureLeftImage || '/gallery/gallery.jpg');
+          setFeatureLeftImageType(data.settings.featureLeftImageType || 'image');
+          
+          // Feature right image 업데이트
+          setFeatureRightImage(data.settings.featureRightImage || '/gallery/wise2.webp');
+          setFeatureRightImageType(data.settings.featureRightImageType || 'image');
+          
+          // Program story images 업데이트
+          if (data.settings.programStoryImages && data.settings.programStoryImages.length > 0) {
+            setProgramStoryImages(data.settings.programStoryImages);
+            setProgramStoryImageTypes(data.settings.programStoryImageTypes || data.settings.programStoryImages.map(() => 'image'));
+          } else {
+            // Fallback 사용
+            setProgramStoryImages(['/gallery/wise.webp', '/gallery/wise2.webp', '/gallery/wise3.webp']);
+            setProgramStoryImageTypes(['image', 'image', 'image']);
+          }
+        } else {
+          // settings가 null이면 fallback 사용
+          console.log('No settings found, using fallback images');
+        }
+      } else {
+        console.error('Failed to refresh landing page settings:', response.status);
+      }
+    } catch (error) {
+      console.error('Error loading landing page settings:', error);
+    }
+  };
+
+
+  const nextCampaign = () => {
+    setCampaignIndex((i) => (i + 1) % campaignItems.length)
+  }
+  
+  const prevCampaign = () => {
+    setCampaignIndex((i) => (i - 1 + campaignItems.length) % campaignItems.length)
+  }
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length)
@@ -192,7 +456,7 @@ export default function HomePage() {
               >
                 {/* Background Image Container - covers everything, always has white background */}
                 {slideImageSrc ? (
-                  <div className="absolute inset-0 overflow-hidden bg-white">
+                  <div className="absolute inset-0 overflow-hidden bg-white group/image">
                     <Image
                       src={slideImageSrc}
                       alt={slide.title}
@@ -238,7 +502,7 @@ export default function HomePage() {
                       {slide.ctaText && (
                         <div className="pt-2 sm:pt-4 pointer-events-auto">
                           <Link 
-                            href={slide.ctaLink}
+                            href={slide.ctaLink || '#'}
                             className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-4 sm:px-8 py-2 sm:py-4 font-semibold shadow-medium hover:shadow-large hover:scale-105 transition-all duration-300 text-sm sm:text-base"
                           >
                             {slide.ctaText}
@@ -279,7 +543,7 @@ export default function HomePage() {
                           {index + 1}
                         </span>
                         <span className="text-[9px] sm:text-xs lg:text-sm font-medium whitespace-nowrap hidden sm:inline">
-                          {slide.slideLabel}
+                          {slide.slideLabel || slide.title}
                         </span>
                       </button>
                     ))}
@@ -391,7 +655,7 @@ export default function HomePage() {
                     }}
                   >
                     {campaignItems.map((item, index) => (
-                      <div key={item.src} className="relative w-full h-full shrink-0">
+                      <div key={item.src || index} className="relative w-full h-full shrink-0 group/image">
                         <Image
                           src={item.src}
                           alt={item.title}
@@ -413,11 +677,11 @@ export default function HomePage() {
               <div className="relative hidden md:block" data-aos="fade-left" data-aos-delay="100">
                 <div className="overflow-hidden shadow-xl border border-secondary-100 bg-white">
                   <div className="absolute inset-0 bg-white" />
-                  <div className="relative aspect-[16/10] overflow-hidden">
+                  <div className="relative aspect-[16/10] overflow-hidden group/image">
                     {/* Current Image - instant change, no animation */}
                     <Image 
-                      src={campaignItems[(campaignIndex + 1) % campaignItems.length].src} 
-                      alt={campaignItems[(campaignIndex + 1) % campaignItems.length].title} 
+                      src={campaignItems[(campaignIndex + 1) % campaignItems.length]?.src || '/gallery/wise2.webp'} 
+                      alt={campaignItems[(campaignIndex + 1) % campaignItems.length]?.title || 'Campaign'} 
                       fill 
                       className="object-cover" 
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -437,13 +701,18 @@ export default function HomePage() {
 
               {/* Text card */}
               <div data-aos="fade-up" data-aos-delay="150">
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-secondary-900 mb-2 sm:mb-3">{campaignItems[campaignIndex].title}</h3>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-secondary-900 mb-2 sm:mb-3">
+                  {campaignItems[campaignIndex]?.title || 'Implant Residency Campaign'}
+                </h3>
                 <p className="text-sm sm:text-base text-secondary-600 leading-relaxed max-w-xl">
-                  Join our residency to build solid surgical fundamentals with daily hands‑on sessions and two live surgery days. Learn efficiently and bring predictable results to your clinic.
+                  {campaignItems[campaignIndex]?.description || 'Join our residency to build solid surgical fundamentals with daily hands-on sessions and two live surgery days. Learn efficiently and bring predictable results to your clinic.'}
                 </p>
                 <div className="mt-5">
-                  <Link href="/schedule" className="inline-flex items-center gap-2 text-secondary-900 font-bold hover:text-primary-700">
-                    APPLY NOW
+                  <Link 
+                    href={campaignItems[campaignIndex]?.ctaLink || '/schedule'} 
+                    className="inline-flex items-center gap-2 text-secondary-900 font-bold hover:text-primary-700 transition-colors"
+                  >
+                    {campaignItems[campaignIndex]?.ctaText || 'APPLY NOW'}
                     <span className="w-2 h-2 rounded-full bg-primary-500" />
                   </Link>
                 </div>
@@ -467,7 +736,8 @@ export default function HomePage() {
       {/* Statistics Section */}
       <div data-aos="fade-up" data-aos-delay="50">
         <StatsSection
-          imageSrc="/gallery/wise3.webp"
+          imageSrc={statsImage}
+          imageType={statsImageType}
           eyebrow="PROGRAM STATS"
           title="WISE Institute at a glance"
           description="Hands-on implant education built for busy clinicians — live surgeries, daily practice, and real clinical impact."
@@ -501,53 +771,29 @@ export default function HomePage() {
       </div>
 
       {/* Feature Links Section */}
-      <div data-aos="fade-up" data-aos-delay="100">
+      <div data-aos="fade-up" data-aos-delay="100" className="relative">
         <FeatureLinksSection
           eyebrow="RESOURCES"
           title="From live surgeries to real clinic results"
           description="See residency highlights, case galleries and resources that show how WISE training translates into everyday clinical outcomes."
-          leftCard={{ imageSrc: '/gallery/wise.webp', title: 'Case gallery', href: '/programs', ctaLabel: 'Browse gallery' }}
-          rightCard={{ imageSrc: '/gallery/wise2.webp', title: 'Residency highlights', href: '/programs', ctaLabel: 'View highlights' }}
+          leftCard={{ 
+            imageSrc: featureLeftImage, 
+            imageType: featureLeftImageType,
+            title: 'WISE Gallery', 
+            href: '/gallery', 
+            ctaLabel: 'Browse gallery',
+          }}
+          rightCard={{ 
+            imageSrc: featureRightImage, 
+            imageType: featureRightImageType,
+            title: 'Residency highlights', 
+            href: '/programs', 
+            ctaLabel: 'View highlights',
+          }}
         />
       </div>
 
       {/* Program Info Section */}
-      {/* Featured Programs - Commented out
-      featuredPrograms={[
-        {
-          icon: <Award className="h-8 w-8 text-white" />,
-          iconBg: 'bg-gradient-to-br from-primary-500 to-primary-600',
-          title: 'Implant Residency',
-          features: [
-            '8-day intensive program with 2 live surgery days',
-            'Designed for busy clinicians — maximize learning in minimal time',
-            'Includes printed course notes for review',
-            'Hands-on every day using pig jaws'
-          ],
-          buttonText: 'Learn More',
-          buttonHref: '/programs',
-          buttonClass: 'btn-primary',
-          dotColor: 'bg-primary-500'
-        },
-        {
-          icon: <Users className="h-8 w-8 text-white" />,
-          iconBg: 'bg-gradient-to-br from-accent-500 to-accent-600',
-          title: 'Live Surgery Study Club',
-          features: [
-            'Real patient cases — dentists bring their own patients',
-            'Paired learning: perform & assist under supervision',
-            'Direct mentorship from Dr. Lee and Dr. Yoon',
-            'Confidence to apply skills in your clinic'
-          ],
-          buttonText: 'Learn More',
-          buttonHref: '/programs',
-          buttonClass: 'btn-accent',
-          dotColor: 'bg-accent-500'
-        }
-      ]}
-      featuredProgramsTitle="Featured Programs"
-      featuredProgramsDescription="Choose from our comprehensive range of implant education programs designed for busy clinicians."
-      */}
       <div data-aos="fade-up" data-aos-delay="150">
         <ProgramInfoSection
           mainTitle="Training that transforms — it's you"
@@ -573,82 +819,42 @@ export default function HomePage() {
               href: '/contact'
             }
           ]}
-          storyItems={[
-            {
-              imageSrc: '/gallery/wise.webp',
-              caption: 'Dentists placing their first implants under expert supervision.'
-            },
-            {
-              imageSrc: '/gallery/wise2.webp',
-              caption: 'Live surgery training with real patient cases.'
-            },
-            {
-              imageSrc: '/gallery/wise3.webp',
-              caption: 'Hands-on practice sessions using pig jaws for realistic experience.'
-            }
-          ]}
+          storyItems={programStoryImages.map((img, idx) => ({
+            imageSrc: img,
+            imageType: programStoryImageTypes[idx] || 'image',
+            caption: idx === 0 
+              ? 'Live surgery training with real patient cases.'
+              : idx === 1
+              ? 'Dentists placing their first implants under expert supervision.'
+              : 'Hands-on practice sessions using pig jaws for realistic experience.',
+          }))}
           moreLinkText="View more stories"
           moreLinkHref="/programs"
         />
       </div>
 
       {/* News Section */}
-      <div data-aos="fade-up" data-aos-delay="200">
-        <NewsSection
-          eyebrow="NEWS"
-          title="WISE Institute News"
-          description="Stay updated with the latest updates, announcements, and highlights from WISE Institute."
-          newsItems={[
-            {
-              category: 'Institute News',
-              categoryColor: 'blue',
-              title: 'New 2025 Implant Residency Program Dates Announced',
-              description: 'WISE Institute is pleased to announce the 2025 schedule for our comprehensive 8-day implant residency program. Registration opens next month.',
-              date: '2025-01-15',
-              href: '/news'
-            },
-            {
-              category: 'Press Release',
-              categoryColor: 'teal',
-              title: 'WISE Institute Partners with HiOssen for Enhanced Training',
-              description: 'We are excited to announce our continued collaboration with HiOssen AIC Education, bringing advanced implant training to general dentists across Western Canada.',
-              date: '2025-12-10',
-              href: '/news'
-            },
-            {
-              category: 'Institute News',
-              categoryColor: 'blue',
-              title: 'Record Number of Doctors Complete 2025 Residency Program',
-              description: 'Over 80 doctors completed our implant residency program this year, with 200+ hours of hands-on training and live surgery sessions.',
-              date: '2025-11-20',
-              href: '/news'
-            },
-            {
-              category: 'Press Release',
-              categoryColor: 'teal',
-              title: 'WISE Institute Live Surgery Featured at PDC 2025',
-              description: 'Dr. Chris Lee and Dr. Stephen Yoon presented live surgery demonstrations at the Pacific Dental Conference, showcasing our hands-on training approach.',
-              date: '2025-10-05',
-              href: '/news'
-            }
-          ]}
-          viewAllText="View all news"
-          viewAllHref="/news"
-        />
+      <NewsSectionWithCMS 
+        isAdmin={isAdmin}
+        onEditNews={(newsItem) => {
+          // 뉴스 편집은 /news 페이지에서 처리
+          window.location.href = '/news';
+        }}
+      />
 
-        {/* Instagram Feed */}
-        <section className="section-padding bg-white">
-          <div className="container-custom">
-            <div className="elfsight-app-2e86006e-ae57-4f36-a3a5-1d7a2a0b162f" data-elfsight-app-lazy></div>
-          </div>
-        </section>
-      </div>
+      {/* Instagram Feed */}
+      <section className="section-padding bg-white">
+        <div className="container-custom">
+          <div className="elfsight-app-2e86006e-ae57-4f36-a3a5-1d7a2a0b162f" data-elfsight-app-lazy></div>
+        </div>
+      </section>
 
       {/* Elfsight Script */}
       <Script
         src="https://elfsightcdn.com/platform.js"
         strategy="lazyOnload"
       />
+
     </div>
   )
 }

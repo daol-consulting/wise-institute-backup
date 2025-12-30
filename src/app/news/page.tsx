@@ -2,201 +2,144 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { Search, Home, ChevronUp } from 'lucide-react'
+import { Search, Home, ChevronUp, Plus, Edit2 } from 'lucide-react'
 import PageHero from '../../components/PageHero'
+import { NewsItem } from '@/lib/news'
+import { checkAdminSession } from '@/lib/admin'
+import NewsEditModal from '@/components/NewsEditModal'
 
-type NewsItem = {
-  id: number
-  category: string
-  categoryColor: string
-  title: string
-  date: string
-  views: number
-  href?: string
-}
-
-const newsItems: NewsItem[] = [
+// Fallback data
+const defaultNewsItems: NewsItem[] = [
   {
-    id: 10,
+    id: '10',
     category: 'Institute News',
     categoryColor: 'blue',
     title: 'New 2025 Implant Residency Program Dates Announced',
+    description: 'WISE Institute is pleased to announce the new dates for the 2025 Implant Residency Program. This comprehensive program offers hands-on training and advanced techniques in implant dentistry.',
     date: '2025-01-15',
-    views: 0,
-    href: '/news/10'
+    href: '/news/10',
+    createdAt: new Date().toISOString(),
   },
   {
-    id: 9,
+    id: '9',
     category: 'Press Release',
     categoryColor: 'teal',
     title: 'WISE Institute Partners with HiOssen for Enhanced Training',
+    description: 'WISE Institute announces a strategic partnership with HiOssen to provide enhanced training opportunities and access to cutting-edge implant technology for our residents.',
     date: '2025-12-10',
-    views: 0,
-    href: '/news/9'
+    href: '/news/9',
+    createdAt: new Date().toISOString(),
   },
   {
-    id: 8,
+    id: '8',
     category: 'Institute News',
     categoryColor: 'blue',
     title: 'Record Number of Doctors Complete 2025 Residency Program',
+    description: 'This year marks a milestone as a record number of doctors successfully completed the WISE Institute Residency Program, demonstrating our commitment to excellence in dental education.',
     date: '2025-11-20',
-    views: 0,
-    href: '/news/8'
+    href: '/news/8',
+    createdAt: new Date().toISOString(),
   },
   {
-    id: 7,
+    id: '7',
     category: 'Press Release',
     categoryColor: 'teal',
     title: 'WISE Institute Live Surgery Featured at PDC 2025',
+    description: 'WISE Institute was honored to feature live surgery demonstrations at the prestigious PDC 2025 conference, showcasing advanced implant techniques to an international audience.',
     date: '2025-10-05',
-    views: 0,
-    href: '/news/7'
+    href: '/news/7',
+    createdAt: new Date().toISOString(),
   },
-  {
-    id: 6,
-    category: 'Institute News',
-    categoryColor: 'blue',
-    title: '2025 Fall Residency Program Successfully Completed',
-    date: '2025-09-15',
-    views: 0,
-    href: '/news/6'
-  },
-  {
-    id: 5,
-    category: 'Press Release',
-    categoryColor: 'teal',
-    title: 'New Hands-on Training Facilities Open',
-    date: '2025-08-20',
-    views: 0,
-    href: '/news/5'
-  },
-  {
-    id: 4,
-    category: 'Institute News',
-    categoryColor: 'blue',
-    title: 'Summer Live Surgery Study Club Concludes',
-    date: '2025-07-10',
-    views: 0,
-    href: '/news/4'
-  },
-  {
-    id: 3,
-    category: 'Press Release',
-    categoryColor: 'teal',
-    title: 'WISE Institute Announces Partnership with Local Clinics',
-    date: '2025-06-25',
-    views: 0,
-    href: '/news/3'
-  },
-  {
-    id: 2,
-    category: 'Institute News',
-    categoryColor: 'blue',
-    title: 'Spring Residency Program Graduates 40 Doctors',
-    date: '2025-05-15',
-    views: 0,
-    href: '/news/2'
-  },
-  {
-    id: 1,
-    category: 'Press Release',
-    categoryColor: 'teal',
-    title: 'WISE Institute Expands Course Offerings',
-    date: '2025-04-10',
-    views: 0,
-    href: '/news/1'
-  }
 ]
 
 export default function NewsPage() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [showScrollTop, setShowScrollTop] = useState(false)
-  const [views, setViews] = useState<Record<number, number>>({})
+  const [newsItems, setNewsItems] = useState<NewsItem[]>(defaultNewsItems)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [showNewsModal, setShowNewsModal] = useState(false)
+  const [editingNews, setEditingNews] = useState<NewsItem | null>(null)
+  const [mediaItems, setMediaItems] = useState<Array<{ id: string; title: string; thumbnail?: string[] }>>([])
 
-  // Load views from localStorage on mount
-  // Note: When DB is connected, views should be fetched from the server/API
+  // Load news items from CMS
   useEffect(() => {
-    const storedViews = localStorage.getItem('newsViews')
-    if (storedViews) {
+    const loadNews = async () => {
       try {
-        const parsedViews = JSON.parse(storedViews)
-        // Merge with current newsItems to ensure all items have view counts
-        const mergedViews: Record<number, number> = {}
-        newsItems.forEach((item) => {
-          mergedViews[item.id] = parsedViews[item.id] ?? item.views
-        })
-        setViews(mergedViews)
-      } catch (e) {
-        // Log error in development only
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Error loading views from localStorage:', e)
+        const response = await fetch('/api/news');
+        if (response.ok) {
+          const data = await response.json();
+          console.log('News API response:', data);
+          console.log('News items count:', data.length);
+          if (data.length > 0) {
+            setNewsItems(data);
+          } else {
+            console.log('No news items from API, using default items');
+          }
+        } else {
+          console.error('News API error:', response.status, response.statusText);
         }
-        // Initialize with default views (0) if parsing fails
-        const initialViews: Record<number, number> = {}
-        newsItems.forEach((item) => {
-          initialViews[item.id] = item.views
-        })
-        setViews(initialViews)
+      } catch (error) {
+        console.error('Error loading news:', error);
       }
-    } else {
-      // Initialize with default views (0)
-      const initialViews: Record<number, number> = {}
-      newsItems.forEach((item) => {
-        initialViews[item.id] = item.views
-      })
-      setViews(initialViews)
-      localStorage.setItem('newsViews', JSON.stringify(initialViews))
-    }
-  }, [])
+    };
+    loadNews();
+  }, []);
 
-  // Get view count for a news item
-  // TODO: When DB is connected, fetch views from API/server instead
-  const getViewCount = (id: number) => {
-    // First check if we have a view count in state (from localStorage or DB)
-    if (views[id] !== undefined) {
-      return views[id]
-    }
-    // Fallback to item's default view count (should be 0)
-    return newsItems.find((item) => item.id === id)?.views ?? 0
-  }
-
-  // Handle news item click to increment views
-  // TODO: When DB is connected, increment views via API call
-  const handleNewsClick = (id: number, href?: string) => {
-    // Check if this news was already viewed today (prevent multiple counts per day)
-    const viewedTodayKey = `newsViewed_${id}_${new Date().toDateString()}`
-    const hasViewedToday = localStorage.getItem(viewedTodayKey)
-
-    if (!hasViewedToday) {
-      // Increment views only if not viewed today
-      const currentViews = views[id] ?? newsItems.find((item) => item.id === id)?.views ?? 0
-      const newViews = {
-        ...views,
-        [id]: currentViews + 1,
+  // Check admin status
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const adminStatus = await checkAdminSession();
+      setIsAdmin(adminStatus);
+      
+      if (adminStatus) {
+        // Load media items for selection
+        try {
+          const mediaResponse = await fetch('/api/media');
+          if (mediaResponse.ok) {
+            const mediaData = await mediaResponse.json();
+            setMediaItems(mediaData);
+          }
+        } catch (error) {
+          console.error('Error loading media items:', error);
+        }
       }
-      setViews(newViews)
-      
-      // Save to localStorage (temporary solution until DB is connected)
-      localStorage.setItem('newsViews', JSON.stringify(newViews))
-      localStorage.setItem(viewedTodayKey, 'true')
-      
-      // TODO: When DB is connected, call API to increment views:
-      // await incrementNewsViews(id)
-    }
-    
-    // Navigate to news detail page (if href is provided)
-    if (href) {
-      // Use Next.js router for client-side navigation if possible
-      window.location.href = href
-    }
-  }
+    };
+    checkAdmin();
+  }, []);
 
-  // Filter news items based on search query
-  const filteredNews = newsItems.filter((item) =>
-    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.category.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const handleRefreshNews = async () => {
+    try {
+      const response = await fetch('/api/news');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length > 0) {
+          setNewsItems(data);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading news:', error);
+    }
+  };
+
+  // Views 기능 제거됨 (Contentful 업데이트로 인한 성능 이슈)
+  // const getViewCount = (item: NewsItem) => {
+  //   return item.views ?? 0
+  // }
+
+  // Get unique categories from news items
+  const categories = Array.from(new Set(newsItems.map(item => item.category).filter(Boolean)))
+  
+  // Filter news items based on search query and selected category
+  const filteredNews = newsItems.filter((item) => {
+    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesCategory = !selectedCategory || item.category === selectedCategory
+    return matchesSearch && matchesCategory
+  })
 
   // Handle scroll to show/hide scroll to top button
   useEffect(() => {
@@ -240,10 +183,13 @@ export default function NewsPage() {
                 </h2>
                 <p className="text-sm sm:text-base text-secondary-600">
                   Total {filteredNews.length} items
+                  {selectedCategory && (
+                    <span className="text-primary-600"> in {selectedCategory}</span>
+                  )}
                 </p>
               </div>
 
-              {/* Search Bar */}
+              {/* Search Bar and Admin Actions */}
               <div className="flex items-center gap-2 w-full lg:w-auto">
                 <div className="relative flex-1 lg:w-64 xl:w-80">
                   <input
@@ -261,14 +207,74 @@ export default function NewsPage() {
                 >
                   <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </button>
+                {isAdmin && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingNews(null);
+                      setShowNewsModal(true);
+                    }}
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-green-600 rounded-lg flex items-center justify-center hover:bg-green-700 transition-colors flex-shrink-0"
+                    aria-label="Create News"
+                    title="Create News"
+                  >
+                    <Plus className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </button>
+                )}
               </div>
             </div>
           </div>
 
+          {/* Category Filter Badges */}
+          {categories.length > 0 && (
+            <div className="mb-4 sm:mb-6">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-full transition-colors ${
+                    selectedCategory === null
+                      ? 'bg-primary-600 text-white'
+                      : 'bg-secondary-100 text-secondary-700 hover:bg-secondary-200'
+                  }`}
+                >
+                  All
+                </button>
+                {categories.map((category) => {
+                  const categoryItem = newsItems.find(item => item.category === category)
+                  const categoryColor = categoryItem?.categoryColor || 'gray'
+                  return (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-full transition-colors ${
+                        selectedCategory === category
+                          ? categoryColor === 'blue'
+                            ? 'bg-blue-600 text-white'
+                            : categoryColor === 'teal'
+                            ? 'bg-primary-600 text-white'
+                            : 'bg-secondary-600 text-white'
+                          : categoryColor === 'blue'
+                          ? 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+                          : categoryColor === 'teal'
+                          ? 'bg-primary-50 text-primary-600 hover:bg-primary-100'
+                          : 'bg-secondary-50 text-secondary-600 hover:bg-secondary-100'
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Total Count - Mobile: shown above list */}
           <div className="lg:hidden mb-4">
             <p className="text-sm text-secondary-900">
-              Total <span className="text-blue-600 font-semibold">{filteredNews.length}</span> items
+              Total <span className="text-primary-600 font-semibold">{filteredNews.length}</span> items
+              {selectedCategory && (
+                <span className="text-secondary-600"> in {selectedCategory}</span>
+              )}
             </p>
           </div>
 
@@ -279,15 +285,13 @@ export default function NewsPage() {
               <div className="col-span-1 text-center text-sm font-bold text-secondary-900">
                 No.
               </div>
-              <div className="col-span-6 text-sm font-bold text-secondary-900">
+              <div className="col-span-7 text-sm font-bold text-secondary-900">
                 Title
               </div>
-              <div className="col-span-2 text-center text-sm font-bold text-secondary-900">
+              <div className="col-span-3 flex items-center justify-end text-sm font-bold text-secondary-900">
                 Date
               </div>
-              <div className="col-span-3 text-center text-sm font-bold text-secondary-900">
-                Views
-              </div>
+              {/* Views 컬럼 제거됨 */}
             </div>
 
             {/* News Items */}
@@ -297,21 +301,26 @@ export default function NewsPage() {
                   No news items found.
                 </div>
               ) : (
-                filteredNews.map((item) => (
+                filteredNews.map((item, index) => {
+                  const newsHref = item.href && item.href !== '/news' ? item.href : `/news/${item.id}`;
+                  return (
                   <div
                     key={item.id}
-                    onClick={() => handleNewsClick(item.id, item.href)}
+                    onClick={() => {
+                      console.log('Navigating to:', newsHref);
+                      router.push(newsHref);
+                    }}
                     className="block hover:bg-secondary-50 transition-colors cursor-pointer"
                   >
                     {/* Desktop Layout */}
                     <div className="hidden lg:grid grid-cols-12 gap-4 py-4">
                       {/* Number */}
                       <div className="col-span-1 flex items-center justify-center text-sm text-secondary-600">
-                        {item.id}
+                        {index + 1}
                       </div>
 
                       {/* Title with Category */}
-                      <div className="col-span-6">
+                      <div className="col-span-7">
                         <div className="flex items-center gap-3">
                           {/* Category */}
                           <span
@@ -333,14 +342,11 @@ export default function NewsPage() {
                       </div>
 
                       {/* Date */}
-                      <div className="col-span-2 flex items-center justify-center text-sm text-secondary-600">
+                      <div className="col-span-3 flex items-center justify-end text-sm text-secondary-600">
                         {item.date}
                       </div>
 
-                      {/* Views */}
-                      <div className="col-span-3 flex items-center justify-center text-sm text-secondary-600">
-                        {getViewCount(item.id).toLocaleString()}
-                      </div>
+                      {/* Views 제거됨 */}
                     </div>
 
                     {/* Mobile Layout */}
@@ -350,11 +356,11 @@ export default function NewsPage() {
                         <div className="flex items-start gap-2 flex-1 min-w-0">
                           {/* Number - small, light gray, vertically aligned with category */}
                           <span className="text-xs text-secondary-400 flex-shrink-0 pt-0.5">
-                            {item.id}
+                            {index + 1}
                           </span>
                           <div className="flex-1 min-w-0">
                             {/* Category */}
-                            <div className="mb-1.5">
+                            <div className="mb-1.5 flex items-center gap-2">
                               <span
                                 className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${
                                   item.categoryColor === 'blue'
@@ -366,6 +372,20 @@ export default function NewsPage() {
                               >
                                 {item.category}
                               </span>
+                              {isAdmin && (
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    setEditingNews(item);
+                                    setShowNewsModal(true);
+                                  }}
+                                  className="p-1 hover:bg-primary-100 rounded transition-colors z-10 relative"
+                                  aria-label="Edit"
+                                >
+                                  <Edit2 className="w-3.5 h-3.5 text-primary-600" />
+                                </button>
+                              )}
                             </div>
                             {/* Title */}
                             <h3 className="text-sm text-secondary-900 font-medium leading-relaxed">
@@ -374,19 +394,18 @@ export default function NewsPage() {
                           </div>
                         </div>
 
-                        {/* Right: Date and Views - stacked, right aligned */}
+                        {/* Right: Date - right aligned */}
                         <div className="flex flex-col items-end gap-1 flex-shrink-0">
                           <span className="text-xs text-secondary-600 whitespace-nowrap">
                             {item.date}
                           </span>
-                          <span className="text-xs text-secondary-600 whitespace-nowrap">
-                            {getViewCount(item.id).toLocaleString()}
-                          </span>
+                          {/* Views 제거됨 */}
                         </div>
                       </div>
                     </div>
                   </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>
@@ -411,6 +430,20 @@ export default function NewsPage() {
         >
           <ChevronUp className="w-5 h-5 text-secondary-700" />
         </button>
+      )}
+
+      {/* News Edit Modal */}
+      {isAdmin && (
+        <NewsEditModal
+          isOpen={showNewsModal}
+          onClose={() => {
+            setShowNewsModal(false);
+            setEditingNews(null);
+          }}
+          onSave={handleRefreshNews}
+          newsItem={editingNews}
+          mediaItems={mediaItems}
+        />
       )}
     </div>
   )

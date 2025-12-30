@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
+import { Edit2 } from 'lucide-react'
 import SectionHeader from '@/components/SectionHeader'
 import DiagonalRibbon from '@/components/DiagonalRibbon'
 
@@ -11,20 +12,24 @@ type StatItem = {
 
 type Props = {
   imageSrc: string
+  imageType?: 'image' | 'video'
   eyebrow: string
   title: string
   description: string
   leftStat: StatItem
   rightStat: StatItem
+  onEdit?: () => void
 }
 
 export default function StatsSection({
   imageSrc,
+  imageType = 'image',
   eyebrow,
   title,
   description,
   leftStat,
   rightStat,
+  onEdit,
 }: Props) {
   const [leftCount, setLeftCount] = useState(0)
   const [rightCount, setRightCount] = useState(0)
@@ -130,10 +135,27 @@ export default function StatsSection({
       
       {/* Image with combined header and stats box on mobile - Full width */}
       <div className="lg:hidden w-full relative pb-32 sm:pb-40 mb-8 sm:mb-12" data-aos="fade-up">
-        <div className="relative border-b border-secondary-100">
+        <div className="relative border-b border-secondary-100 group/image">
           <div className="relative aspect-[4/3] sm:aspect-[3/2] overflow-hidden">
+            {imageType === 'video' ? (
+              <video src={imageSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            ) : (
             <Image src={imageSrc} alt={title} fill className="object-cover" sizes="100vw" />
+            )}
           </div>
+          {onEdit && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onEdit();
+              }}
+              className="absolute top-2 right-2 p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors shadow-lg opacity-0 group-hover/image:opacity-100 z-20"
+              aria-label="Edit image"
+            >
+              <Edit2 className="w-3.5 h-3.5" />
+            </button>
+          )}
           {/* Combined overlay box - header + stats, positioned at bottom, left margin, right no margin */}
           <div className="absolute top-[60%] left-4 sm:left-5 right-0 z-50" data-aos="fade-up" data-aos-delay="100">
             <div className="relative">
@@ -201,10 +223,27 @@ export default function StatsSection({
         {/* Desktop Top Grid - Image and Header side by side */}
         <div className="hidden lg:grid grid-cols-2 gap-12 items-start mb-10">
           {/* Left big image */}
-          <div className="overflow-hidden shadow-xl border border-secondary-100" data-aos="fade-right">
+          <div className="overflow-hidden shadow-xl border border-secondary-100 group/image relative" data-aos="fade-right">
             <div className="relative aspect-[4/3]">
+              {imageType === 'video' ? (
+                <video src={imageSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+              ) : (
               <Image src={imageSrc} alt={title} fill className="object-cover" />
+              )}
             </div>
+            {onEdit && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onEdit();
+                }}
+                className="absolute top-2 right-2 p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors shadow-lg opacity-0 group-hover/image:opacity-100 z-10"
+                aria-label="Edit image"
+              >
+                <Edit2 className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
 
           {/* Right header */}

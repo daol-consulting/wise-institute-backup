@@ -1,15 +1,17 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Edit2 } from 'lucide-react'
 import SectionHeader from '@/components/SectionHeader'
 import DiagonalRibbon from '@/components/DiagonalRibbon'
 
 type LinkCard = {
   imageSrc: string
+  imageType?: 'image' | 'video'
   title: string
   href: string
   ctaLabel?: string
+  onEdit?: () => void
 }
 
 type Props = {
@@ -47,12 +49,29 @@ export default function FeatureLinksSection({
               <div key={idx} className="relative" data-aos="fade-up" data-aos-delay={idx * 100}>
                 <Link href={card.href} className="block group">
                   {/* Image container with ribbon */}
-                  <div className="relative mb-4">
+                  <div className="relative mb-4 group/image">
                     <div className="relative z-10 overflow-hidden border border-secondary-100">
                       <div className="relative aspect-[4/3]">
+                        {card.imageType === 'video' ? (
+                          <video src={card.imageSrc} autoPlay loop muted playsInline className="w-full h-full object-cover group-hover:opacity-90 transition-opacity duration-300" />
+                        ) : (
                         <Image src={card.imageSrc} alt={card.title} fill className="object-cover group-hover:opacity-90 transition-opacity duration-300" />
+                        )}
                       </div>
                     </div>
+                    {card.onEdit && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          card.onEdit?.();
+                        }}
+                        className="absolute top-2 right-2 p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors shadow-lg opacity-0 group-hover/image:opacity-100 z-20"
+                        aria-label="Edit image"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                     {/* Background color mask to hide overlap */}
                     <div className="absolute -bottom-1 left-0 right-0 h-8 bg-[#f7f7f7] z-[5]" />
                     {/* Animated ribbon - appears on hover */}

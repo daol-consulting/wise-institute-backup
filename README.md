@@ -10,6 +10,7 @@ A modern, responsive website for WISE Institute - Western Implant and Surgical E
 - **Interactive Forms**: Contact and registration forms with validation
 - **SEO Optimized**: Proper meta tags and semantic HTML structure
 - **Fast Performance**: Optimized with Next.js and modern web standards
+- **CMS Integration**: Contentful-based CMS for easy image and video management
 
 ## Color Scheme
 
@@ -37,6 +38,8 @@ A modern, responsive website for WISE Institute - Western Implant and Surgical E
 - **Icons**: Lucide React
 - **Animations**: AOS (Animate On Scroll)
 - **Font**: Pretendard (Korean-friendly)
+- **CMS**: Contentful (for media management)
+- **Image Processing**: Sharp (WebP conversion)
 
 ## Getting Started
 
@@ -58,12 +61,16 @@ cd wise-institute
 npm install
 ```
 
-3. Run the development server:
+3. Set up environment variables:
+   - Copy `.env.example` to `.env.local` (if exists)
+   - Configure Contentful and admin credentials (see [CMS_SETUP.md](./CMS_SETUP.md))
+
+4. Run the development server:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Building for Production
 
@@ -84,6 +91,12 @@ src/
 │   ├── schedule/          # Schedule page
 │   ├── contact/           # Contact page
 │   ├── culture/           # Culture page
+│   ├── admin/             # Admin CMS page
+│   ├── login/             # Admin login page
+│   ├── api/               # API routes
+│   │   ├── auth/          # Authentication endpoints
+│   │   ├── admin/         # Admin API endpoints
+│   │   └── media/         # Media API endpoints
 │   ├── layout.tsx         # Root layout
 │   └── page.tsx           # Home page
 ├── components/            # Reusable components
@@ -91,7 +104,9 @@ src/
 │   ├── Footer.tsx         # Footer component
 │   └── AOSProvider.tsx   # Animation provider
 ├── lib/                   # Utility functions
-│   └── utils.ts           # Utility functions
+│   ├── utils.ts           # Utility functions
+│   ├── contentful.ts      # Contentful client
+│   └── contentfulManagement.ts  # Contentful management API
 └── styles/                # Global styles
     └── globals.css        # Global CSS with Tailwind
 ```
@@ -117,7 +132,11 @@ theme: {
 The Pretendard font is loaded via CDN in `globals.css`. To use a local font file, update the import and add the font file to the `public` directory.
 
 ### Content
-All content is hardcoded in the page components. To make it dynamic, consider integrating with a CMS like Sanity, Strapi, or Contentful.
+- **Static Content**: Most content is hardcoded in page components
+- **Dynamic Media**: Images and videos are managed through the integrated Contentful CMS
+- **CMS Access**: Visit `/admin` to manage media content (requires admin login)
+
+For CMS setup instructions, see [CMS_SETUP.md](./CMS_SETUP.md).
 
 ## Deployment
 
