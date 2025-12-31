@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, Users, Calendar, Award, ChevronLeft, ChevronRight, Clock } from 'lucide-react'
+import { ArrowRight, Users, Calendar, Award, ChevronLeft, ChevronRight, Clock, Volume2, VolumeX } from 'lucide-react'
 import Link from 'next/link'
 import Script from 'next/script'
 import Logo from '@/components/Logo'
@@ -103,6 +103,8 @@ function NewsSectionWithCMS({ isAdmin, onEditNews }: { isAdmin: boolean; onEditN
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
   const autoSlideIntervalRef = useRef<NodeJS.Timeout | null>(null)
   
   // Campaign slider state (second section)
@@ -353,24 +355,53 @@ export default function HomePage() {
       return
     }
 
-    // On mobile, first slide (video) should advance after 14 seconds, otherwise 8 seconds
-    const slideInterval = !isDesktop && currentSlide === 0 ? 14000 : 8000
+    // Don't auto-advance on first slide (video) - wait for video to finish
+    // Video will handle advancing to next slide via onEnded handler
+    if (currentSlide === 0) {
+      if (autoSlideIntervalRef.current) {
+        clearInterval(autoSlideIntervalRef.current)
+        autoSlideIntervalRef.current = null
+      }
+      return
+    }
 
-    // Auto-advance slides
+    // For other slides, auto-advance every 8 seconds
     autoSlideIntervalRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length)
-    }, slideInterval)
+    }, 8000)
 
     return () => {
       if (autoSlideIntervalRef.current) {
         clearInterval(autoSlideIntervalRef.current)
       }
     }
-  }, [isPaused, slides.length, isDesktop, currentSlide])
+  }, [isPaused, slides.length, currentSlide])
 
   const togglePause = () => {
     setIsPaused((prev) => !prev)
   }
+
+  const toggleMute = () => {
+    setIsMuted((prev) => {
+      const newMuted = !prev
+      if (videoRef.current) {
+        videoRef.current.muted = newMuted
+      }
+      return newMuted
+    })
+  }
+
+  // Restart video when returning to first slide
+  useEffect(() => {
+    if (currentSlide === 0 && videoRef.current) {
+      videoRef.current.currentTime = 0
+      if (!isPaused) {
+        videoRef.current.play().catch((error) => {
+          console.error('Error playing video:', error)
+        })
+      }
+    }
+  }, [currentSlide, isPaused])
 
   const handleSlideClick = (index: number) => {
     setCurrentSlide(index)
@@ -459,12 +490,13 @@ export default function HomePage() {
                 {/* Background Image Container - covers everything, always has white background */}
                 {slideImageSrc ? (
                   <div className="absolute inset-0 overflow-hidden bg-white group/image">
-                    {/* Show video on mobile for first slide, otherwise show image */}
-                    {!isDesktop && index === 0 ? (
+                    {/* Show video for first slide on both mobile and desktop, otherwise show image */}
+                    {index === 0 ? (
                       <video
-                        src="/gallery/wise_video.mp4"
+                        ref={videoRef}
+                        src={isDesktop ? "/gallery/wise-institute.mp4" : "/gallery/wise_video.mp4"}
                         autoPlay
-                        muted
+                        muted={isMuted}
                         playsInline
                         className="object-cover w-full h-full"
                         style={{ 
@@ -472,7 +504,7 @@ export default function HomePage() {
                           objectPosition: 'center top' 
                         }}
                         onEnded={() => {
-                          // Video ended, move to next slide after 14 seconds
+                          // Video ended, move to next slide
                           if (!isPaused) {
                             nextSlide()
                           }
@@ -600,6 +632,21 @@ export default function HomePage() {
                         </svg>
                       )}
                     </button>
+
+                    {/* Mute/Unmute Button - only show on first slide (video) */}
+                    {currentSlide === 0 && (
+                      <button
+                        onClick={toggleMute}
+                        className="text-white hover:text-white/80 transition-colors"
+                        aria-label={isMuted ? 'Unmute' : 'Mute'}
+                      >
+                        {isMuted ? (
+                          <VolumeX className="w-4 h-4 lg:w-5 lg:h-5" />
+                        ) : (
+                          <Volume2 className="w-4 h-4 lg:w-5 lg:h-5" />
+                        )}
+                      </button>
+                    )}
                   </div>
                 </div>
 
