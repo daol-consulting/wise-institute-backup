@@ -95,7 +95,7 @@ export default function ProgramsPage() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-2xl bg-white shadow ring-1 ring-secondary-100 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-2xl bg-white shadow ring-1 ring-secondary-100 flex items-center justify-center flex-shrink-0">
                     <Activity className="h-5 w-5 text-primary" />
                   </div>
                   <div>
@@ -104,7 +104,7 @@ export default function ProgramsPage() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-2xl bg-white shadow ring-1 ring-secondary-100 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-2xl bg-white shadow ring-1 ring-secondary-100 flex items-center justify-center flex-shrink-0">
                     <Heart className="h-5 w-5 text-primary" />
                   </div>
                   <div>
@@ -113,7 +113,7 @@ export default function ProgramsPage() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-2xl bg-white shadow ring-1 ring-secondary-100 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-2xl bg-white shadow ring-1 ring-secondary-100 flex items-center justify-center flex-shrink-0">
                     <Target className="h-5 w-5 text-primary" />
                   </div>
                   <div>
