@@ -621,7 +621,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
             {/* Left column: image with ribbon */}
             <div
-              className="relative max-w-sm mx-auto w-full md:max-w-none"
+              className="relative max-w-sm mx-auto w-full md:max-w-none order-1 md:order-1"
               data-aos="fade-right"
               onTouchStart={handleCampaignTouchStart}
               onTouchMove={handleCampaignTouchMove}
@@ -670,12 +670,25 @@ export default function HomePage() {
                       </div>
                     ))}
                   </div>
+                  
+                  {/* Swipe indicator animation - 모바일에서만 표시 */}
+                  <div className="absolute inset-0 md:hidden pointer-events-none flex items-center justify-between px-4 z-30">
+                    {/* Left arrow */}
+                    <div className="animate-swipe-left flex items-center justify-center w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg">
+                      <ChevronLeft className="w-5 h-5 text-secondary-700" />
+                    </div>
+                    
+                    {/* Right arrow */}
+                    <div className="animate-swipe-right flex items-center justify-center w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg">
+                      <ChevronRight className="w-5 h-5 text-secondary-700" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Right column: top image + content card */}
-            <div className="space-y-8" data-aos="fade-left">
+            <div className="space-y-8 order-2 md:order-2" data-aos="fade-left">
               {/* Top right small image with arrows */}
               <div className="relative hidden md:block" data-aos="fade-left" data-aos-delay="100">
                 <div className="overflow-hidden shadow-xl border border-secondary-100 bg-white">
@@ -703,31 +716,33 @@ export default function HomePage() {
               </div>
 
               {/* Text card */}
-              <div data-aos="fade-up" data-aos-delay="150">
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-secondary-900 mb-2 sm:mb-3">
-                  {campaignItems[campaignIndex]?.title || 'Implant Residency Campaign'}
-                </h3>
-                <p className="text-sm sm:text-base text-secondary-600 leading-relaxed max-w-xl">
-                  {campaignItems[campaignIndex]?.description || 'Join our residency to build solid surgical fundamentals with daily hands-on sessions and two live surgery days. Learn efficiently and bring predictable results to your clinic.'}
-                </p>
-                <div className="mt-5">
-                  <Link 
-                    href={campaignItems[campaignIndex]?.ctaLink || '/schedule'} 
-                    className="inline-flex items-center gap-2 text-secondary-900 font-bold hover:text-primary-700 transition-colors"
-                  >
-                    {campaignItems[campaignIndex]?.ctaText || 'APPLY NOW'}
-                    <span className="w-2 h-2 rounded-full bg-primary-500" />
-                  </Link>
-                </div>
-
-                {/* bottom progress / pager */}
-                <div className="mt-8 flex items-center justify-between">
+              <div data-aos="fade-up" data-aos-delay="150" className="flex flex-col">
+                {/* bottom progress / pager - 모바일에서 위로 */}
+                <div className="mb-8 md:order-last md:mt-8 md:mb-0 flex items-center justify-between">
                   <div className="h-[2px] bg-secondary-200 w-1/2">
                     <div className="h-full bg-secondary-500" style={{ width: `${((campaignIndex + 1) / campaignItems.length) * 100}%` }} />
                   </div>
                   <div className="flex items-center gap-4 text-secondary-500 text-xs">
                     <span>{campaignIndex + 1} / {campaignItems.length}</span>
                     <span className="w-2 h-2 rounded-sm bg-secondary-500" />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-secondary-900 mb-2 sm:mb-3">
+                    {campaignItems[campaignIndex]?.title || 'Implant Residency Campaign'}
+                  </h3>
+                  <p className="text-sm sm:text-base text-secondary-600 leading-relaxed max-w-xl">
+                    {campaignItems[campaignIndex]?.description || 'Join our residency to build solid surgical fundamentals with daily hands-on sessions and two live surgery days. Learn efficiently and bring predictable results to your clinic.'}
+                  </p>
+                  <div className="mt-5">
+                    <Link 
+                      href={campaignItems[campaignIndex]?.ctaLink || '/schedule'} 
+                      className="inline-flex items-center gap-2 text-secondary-900 font-bold hover:text-primary-700 transition-colors"
+                    >
+                      {campaignItems[campaignIndex]?.ctaText || 'APPLY NOW'}
+                      <span className="w-2 h-2 rounded-full bg-primary-500" />
+                    </Link>
                   </div>
                 </div>
               </div>

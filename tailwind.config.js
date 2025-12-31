@@ -77,6 +77,8 @@ module.exports = {
         'scale-in': 'scaleIn 0.3s ease-out',
         'float': 'float 3s ease-in-out infinite',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'swipe-left': 'swipeLeft 2s ease-in-out infinite',
+        'swipe-right': 'swipeRight 2s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -102,6 +104,14 @@ module.exports = {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        swipeLeft: {
+          '0%, 100%': { transform: 'translateX(0)', opacity: '0.6' },
+          '50%': { transform: 'translateX(-8px)', opacity: '1' },
+        },
+        swipeRight: {
+          '0%, 100%': { transform: 'translateX(0)', opacity: '0.6' },
+          '50%': { transform: 'translateX(8px)', opacity: '1' },
         },
       },
     },
