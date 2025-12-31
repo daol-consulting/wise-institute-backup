@@ -132,11 +132,11 @@ export default function NewsPage() {
 
   // Get unique categories from news items
   const categories = Array.from(new Set(newsItems.map(item => item.category).filter(Boolean)))
-  
+
   // Filter news items based on search query and selected category
   const filteredNews = newsItems.filter((item) => {
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchQuery.toLowerCase())
+    item.category.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesCategory = !selectedCategory || item.category === selectedCategory
     return matchesSearch && matchesCategory
   })

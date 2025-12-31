@@ -99,19 +99,21 @@ export default function GalleryPage() {
   }
 
   // Build all gallery media array when mediaItems change
+  // Only include the first media (video or image) from each MediaItem to avoid showing duplicates in lightbox
   useEffect(() => {
     const galleryMedia: GalleryMedia[] = []
     mediaItems.forEach((item) => {
       const allMedia = getAllMediaUrls(item)
-      allMedia.forEach((media) => {
+      // Only take the first media item (prioritizes video if available)
+      if (allMedia.length > 0) {
         galleryMedia.push({
-          url: media.url,
-          type: media.type,
+          url: allMedia[0].url,
+          type: allMedia[0].type,
           itemTitle: item.title,
           itemDescription: item.description,
           itemCategory: item.category,
         })
-      })
+      }
     })
     setAllGalleryMedia(galleryMedia)
   }, [mediaItems])
@@ -153,16 +155,9 @@ export default function GalleryPage() {
   }, [selectedMediaIndex])
 
   const openModal = (itemIndex: number, mediaIndex: number) => {
-    // Find the index in allGalleryMedia array
-    let currentIndex = 0
-    for (let i = 0; i < itemIndex; i++) {
-      const allMedia = getAllMediaUrls(mediaItems[i])
-      currentIndex += allMedia.length
-    }
-    // Add the mediaIndex within the current item
-    const allMedia = getAllMediaUrls(mediaItems[itemIndex])
-    currentIndex += mediaIndex
-    setSelectedMediaIndex(currentIndex)
+    // Since allGalleryMedia now only contains the first media from each MediaItem,
+    // the index in allGalleryMedia is simply the itemIndex
+    setSelectedMediaIndex(itemIndex)
   }
 
   const closeModal = () => {
@@ -223,7 +218,7 @@ export default function GalleryPage() {
       />
 
       {/* Main Content */}
-      <section className="section-padding bg-white">
+      <section className={`section-padding bg-white ${selectedMediaIndex !== null ? 'opacity-0 pointer-events-none' : ''}`}>
         <div className="container-custom">
           {/* Search Bar and Count */}
           <div className="mb-4 sm:mb-6 lg:mb-8">
@@ -481,6 +476,7 @@ export default function GalleryPage() {
           <div
             className="relative max-w-7xl w-full h-full flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
+            style={{ zIndex: 100000 }}
           >
             {allGalleryMedia[selectedMediaIndex].type === 'video' ? (
               <video
@@ -489,6 +485,7 @@ export default function GalleryPage() {
                 controls
                 autoPlay
                 loop
+                style={{ position: 'relative', zIndex: 100001 }}
               />
             ) : (
               <div className="relative max-w-7xl w-full h-full flex items-center justify-center">
@@ -504,7 +501,7 @@ export default function GalleryPage() {
             )}
 
             {/* Media Info */}
-            <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 bg-black/60 backdrop-blur-sm rounded-lg p-4 sm:p-6 text-white">
+            <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 bg-black/60 backdrop-blur-sm rounded-lg p-4 sm:p-6 text-white" style={{ zIndex: 100002 }}>
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg sm:text-xl font-bold mb-1">

@@ -225,27 +225,27 @@ function SortableCampaignItem({ item, items, index, onUpdate, onRemove }: {
         
         <div className="flex-1 space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-secondary-700 mb-1">Media Item *</label>
-              <select
+          <div>
+            <label className="block text-xs font-medium text-secondary-700 mb-1">Media Item *</label>
+            <select
                 value={item.mediaItemId || ''}
-                onChange={(e) => onUpdate(index, { ...item, mediaItemId: e.target.value })}
-                className="w-full border border-secondary-200 rounded-lg px-3 py-2 text-sm"
-                required
-              >
-                <option value="">Select media item</option>
-                {items.map(m => (
-                  <option key={m.id} value={m.id}>{m.title}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-secondary-700 mb-1">Title</label>
-              <input
-                type="text"
-                value={item.title || ''}
-                onChange={(e) => onUpdate(index, { ...item, title: e.target.value })}
-                className="w-full border border-secondary-200 rounded-lg px-3 py-2 text-sm"
+              onChange={(e) => onUpdate(index, { ...item, mediaItemId: e.target.value })}
+              className="w-full border border-secondary-200 rounded-lg px-3 py-2 text-sm"
+              required
+            >
+              <option value="">Select media item</option>
+              {items.map(m => (
+                <option key={m.id} value={m.id}>{m.title}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-secondary-700 mb-1">Title</label>
+            <input
+              type="text"
+              value={item.title || ''}
+              onChange={(e) => onUpdate(index, { ...item, title: e.target.value })}
+              className="w-full border border-secondary-200 rounded-lg px-3 py-2 text-sm"
                 placeholder="Campaign title"
               />
             </div>
