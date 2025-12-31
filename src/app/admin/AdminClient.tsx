@@ -55,34 +55,34 @@ function SortableMediaItem({ item, onEdit, onDelete, isDeleting }: {
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-white rounded-xl border border-secondary-200 p-5 mb-4 transition-all duration-200 relative shadow-soft ${
+      className={`bg-white rounded-xl border border-secondary-200 p-3 sm:p-4 md:p-5 mb-3 sm:mb-4 transition-all duration-200 relative shadow-soft ${
         isDragging ? 'shadow-large border-primary-300' : 'hover:border-primary-300 hover:shadow-medium'
       } ${isDeleting ? 'opacity-60' : ''}`}
     >
       {isDeleting && (
         <div className="absolute inset-0 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center z-10">
           <div className="flex flex-col items-center gap-2">
-            <svg className="animate-spin h-6 w-6 text-primary-600" viewBox="0 0 24 24">
+            <svg className="animate-spin h-5 w-5 sm:h-6 sm:w-6 text-primary-600" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
             </svg>
-            <span className="text-sm font-medium text-secondary-700">Deleting...</span>
+            <span className="text-xs sm:text-sm font-medium text-secondary-700">Deleting...</span>
           </div>
         </div>
       )}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <div
           {...attributes}
           {...listeners}
-          className={`cursor-grab active:cursor-grabbing p-2 hover:bg-secondary-50 rounded-lg flex-shrink-0 transition-colors ${isDeleting ? 'pointer-events-none' : ''}`}
+          className={`cursor-grab active:cursor-grabbing p-1.5 sm:p-2 hover:bg-secondary-50 rounded-lg flex-shrink-0 transition-colors self-start ${isDeleting ? 'pointer-events-none' : ''}`}
         >
-          <GripVertical className="w-5 h-5 text-secondary-400" />
+          <GripVertical className="w-4 h-4 sm:w-5 sm:h-5 text-secondary-400" />
         </div>
         
-        <div className="flex-1 flex items-center gap-5 min-w-0">
+        <div className="flex-1 flex items-center gap-3 sm:gap-4 md:gap-5 min-w-0 w-full sm:w-auto">
           {/* Show thumbnail or video with thumbnail as poster */}
           {(item.thumbnail && item.thumbnail.length > 0) || (item.videos && item.videos.length > 0) ? (
-            <div className="w-20 h-20 relative rounded-xl overflow-hidden flex-shrink-0 border border-secondary-200 bg-secondary-100">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 relative rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0 border border-secondary-200 bg-secondary-100">
               {item.videos && item.videos.length > 0 ? (
                 <video
                   src={item.videos[0]}
@@ -112,7 +112,7 @@ function SortableMediaItem({ item, onEdit, onDelete, isDeleting }: {
               )}
               {/* Video indicator */}
               {item.videos && item.videos.length > 0 && (
-                <div className="absolute top-1 right-1 bg-primary-600/90 backdrop-blur-sm px-1.5 py-0.5 rounded text-[9px] font-semibold text-white">
+                <div className="absolute top-1 right-1 bg-primary-600/90 backdrop-blur-sm px-1 sm:px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] font-semibold text-white">
                   Video
             </div>
           )}
@@ -120,28 +120,28 @@ function SortableMediaItem({ item, onEdit, onDelete, isDeleting }: {
           ) : null}
           
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-lg text-secondary-900 truncate mb-1">{item.title}</h3>
+            <h3 className="font-semibold text-base sm:text-lg text-secondary-900 truncate mb-0.5 sm:mb-1">{item.title}</h3>
             {item.category && (
-              <p className="text-sm text-primary-600 capitalize mb-1">{item.category}</p>
+              <p className="text-xs sm:text-sm text-primary-600 capitalize mb-0.5 sm:mb-1">{item.category}</p>
             )}
             {item.description && (
-              <p className="text-xs text-secondary-500 truncate">{item.description}</p>
+              <p className="text-[10px] sm:text-xs text-secondary-500 line-clamp-2 sm:truncate">{item.description}</p>
             )}
           </div>
         </div>
         
-        <div className="flex gap-3 flex-shrink-0">
+        <div className="flex gap-2 sm:gap-3 flex-shrink-0 w-full sm:w-auto">
           <button
             onClick={() => onEdit(item.id)}
             disabled={isDeleting}
-            className="px-5 py-2 text-sm bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+            className="flex-1 sm:flex-none px-4 sm:px-5 py-2 text-xs sm:text-sm bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
             Edit
           </button>
           <button
             onClick={() => onDelete(item.id)}
             disabled={isDeleting}
-            className="px-5 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed relative font-medium"
+            className="flex-1 sm:flex-none px-4 sm:px-5 py-2 text-xs sm:text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed relative font-medium"
           >
             {isDeleting && (
               <span className="absolute inset-0 flex items-center justify-center">
@@ -820,39 +820,40 @@ export default function AdminClient() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background to-secondary-50 w-full overflow-x-hidden pt-20 pb-12">
-      <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12">
+    <main className="min-h-screen bg-gradient-to-br from-background to-secondary-50 w-full overflow-x-hidden pt-16 sm:pt-20 pb-8 sm:pb-12">
+      <div className="w-full max-w-[1200px] mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 md:mb-12">
-          <div>
-            <div className="w-12 h-1 bg-primary-600 mb-4"></div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-secondary-900 mb-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 md:mb-12">
+          <div className="flex-1 min-w-0">
+            <div className="w-10 sm:w-12 h-1 bg-primary-600 mb-3 sm:mb-4"></div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-secondary-900 mb-1.5 sm:mb-2">
               {activeTab === 'news' ? 'News Management' : editingId ? 'Edit Media' : 'Create Media'}
             </h1>
-            <p className="text-base text-secondary-600">
+            <p className="text-sm sm:text-base text-secondary-600">
               {activeTab === 'news' ? 'Manage news articles and announcements' : 'Manage your WISE Institute media content'}
             </p>
           </div>
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 w-full sm:w-auto">
             <div className="hidden md:flex items-center gap-2 text-xs text-secondary-500">
               <span className="inline-block h-2 w-2 rounded-full bg-primary-600"></span>
               Auto WebP (q=100)
             </div>
             <button
               onClick={handleLogout}
-              className="px-4 sm:px-6 py-2 sm:py-2.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors whitespace-nowrap flex items-center gap-2"
+              className="px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 sm:gap-2"
             >
-              <LogOut className="w-4 h-4" />
-              Logout
+              <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">Logout</span>
+              <span className="xs:hidden">Out</span>
             </button>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="mb-8 flex gap-2 border-b border-secondary-200 overflow-x-auto">
+        <div className="mb-6 sm:mb-8 flex gap-1 sm:gap-2 border-b border-secondary-200 overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
           <button
             onClick={() => setActiveTab('media')}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 whitespace-nowrap ${
+            className={`px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium transition-colors border-b-2 whitespace-nowrap ${
               activeTab === 'media'
                 ? 'border-primary-600 text-primary-600'
                 : 'border-transparent text-secondary-500 hover:text-secondary-700'
@@ -862,19 +863,19 @@ export default function AdminClient() {
           </button>
           <button
             onClick={() => setActiveTab('news')}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 flex items-center gap-2 whitespace-nowrap ${
+            className={`px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-medium transition-colors border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
               activeTab === 'news'
                 ? 'border-primary-600 text-primary-600'
                 : 'border-transparent text-secondary-500 hover:text-secondary-700'
             }`}
           >
-            <Newspaper className="w-4 h-4" />
+            <Newspaper className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             News
           </button>
         </div>
 
         {message && (
-          <div className="mb-6 p-4 rounded-xl border border-primary-200 bg-primary-50 text-secondary-900">
+          <div className="mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-primary-200 bg-primary-50 text-sm sm:text-base text-secondary-900">
             {message}
           </div>
         )}
@@ -887,26 +888,26 @@ export default function AdminClient() {
         {/* Media Management */}
         {activeTab === 'media' && (
           <>
-        <form onSubmit={onSubmit} className="bg-white rounded-3xl border border-secondary-200 shadow-soft p-6 md:p-8 grid grid-cols-1 gap-6 md:gap-8" encType="multipart/form-data">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onSubmit={onSubmit} className="bg-white rounded-2xl sm:rounded-3xl border border-secondary-200 shadow-soft p-4 sm:p-6 md:p-8 grid grid-cols-1 gap-4 sm:gap-6 md:gap-8" encType="multipart/form-data">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">Title *</label>
-              <input name="title" value={title} onChange={(e)=>setTitle(e.target.value)} required className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
+              <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">Title *</label>
+              <input name="title" value={title} onChange={(e)=>setTitle(e.target.value)} required className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">Category (optional)</label>
-              <input name="category" value={category} onChange={(e)=>setCategory(e.target.value)} className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
+              <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">Category (optional)</label>
+              <input name="category" value={category} onChange={(e)=>setCategory(e.target.value)} className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-secondary-700 mb-2">Description (optional)</label>
-            <textarea name="description" value={description} onChange={(e)=>setDescription(e.target.value)} rows={5} className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors resize-none" />
+            <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">Description (optional)</label>
+            <textarea name="description" value={description} onChange={(e)=>setDescription(e.target.value)} rows={4} className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors resize-none" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">
                 Thumbnails (auto-compressed to max 2MB each)
               </label>
               <input 
@@ -915,13 +916,13 @@ export default function AdminClient() {
                 accept="image/*" 
                 multiple 
                 onChange={handleThumbnailChange}
-                className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" 
+                className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 sm:py-3 text-xs sm:text-sm text-secondary-900 file:mr-2 sm:file:mr-4 file:py-1.5 sm:file:py-2 file:px-3 sm:file:px-4 file:rounded-md sm:file:rounded-lg file:border-0 file:text-xs sm:file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" 
               />
               
               {editingId && existingThumbnails.length > 0 && (
-                <div className="mt-6">
-                  <p className="text-sm text-secondary-700 mb-3 font-medium">Existing Thumbnails:</p>
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="mt-4 sm:mt-6">
+                  <p className="text-xs sm:text-sm text-secondary-700 mb-2 sm:mb-3 font-medium">Existing Thumbnails:</p>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
                     {existingThumbnails.map((src, idx) => (
                       <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-secondary-200">
                         <Image src={src} alt={`Existing ${idx + 1}`} fill className="object-cover" />
@@ -932,9 +933,9 @@ export default function AdminClient() {
               )}
               
               {thumbnailPreviews.length >= 2 && (
-                <div className="mt-6">
-                  <p className="text-sm text-secondary-700 mb-3 font-medium">New Thumbnails:</p>
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="mt-4 sm:mt-6">
+                  <p className="text-xs sm:text-sm text-secondary-700 mb-2 sm:mb-3 font-medium">New Thumbnails:</p>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
                     {thumbnailPreviews.slice(0, 2).map((src, idx) => (
                       <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-secondary-200">
                         <Image src={src} alt={`New ${idx + 1}`} fill className="object-cover" />
@@ -944,24 +945,24 @@ export default function AdminClient() {
                 </div>
               )}
               {thumbnailPreviews.length === 1 && (
-                <div className="mt-6">
-                  <p className="text-sm text-secondary-700 mb-3 font-medium">New Thumbnail:</p>
-                  <div className="relative aspect-square w-full max-w-sm rounded-xl overflow-hidden border border-secondary-200">
+                <div className="mt-4 sm:mt-6">
+                  <p className="text-xs sm:text-sm text-secondary-700 mb-2 sm:mb-3 font-medium">New Thumbnail:</p>
+                  <div className="relative aspect-square w-full max-w-xs sm:max-w-sm rounded-lg sm:rounded-xl overflow-hidden border border-secondary-200">
                     <Image src={thumbnailPreviews[0]} alt="New thumbnail" fill className="object-cover" />
                   </div>
                 </div>
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">
                 Images (multiple, auto-compressed to max 2MB each)
               </label>
-              <input name="images" type="file" accept="image/*" multiple onChange={handleImageChange} className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
+              <input name="images" type="file" accept="image/*" multiple onChange={handleImageChange} className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 sm:py-3 text-xs sm:text-sm text-secondary-900 file:mr-2 sm:file:mr-4 file:py-1.5 sm:file:py-2 file:px-3 sm:file:px-4 file:rounded-md sm:file:rounded-lg file:border-0 file:text-xs sm:file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
               
               {selectedImageFiles.length > 0 && (
-                <div className="mt-6">
-                  <p className="text-sm text-secondary-700 mb-3 font-medium">New Images:</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                <div className="mt-4 sm:mt-6">
+                  <p className="text-xs sm:text-sm text-secondary-700 mb-2 sm:mb-3 font-medium">New Images:</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
                     {selectedImageFiles.map((file, idx) => (
                       <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-secondary-200 group">
                         {imagePreviewUrls[idx] && (
@@ -982,9 +983,9 @@ export default function AdminClient() {
               )}
               
               {editingId && existingImages.length > 0 && (
-                <div className="mt-6">
-                  <p className="text-sm text-secondary-700 mb-3 font-medium">Existing Images:</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                <div className="mt-4 sm:mt-6">
+                  <p className="text-xs sm:text-sm text-secondary-700 mb-2 sm:mb-3 font-medium">Existing Images:</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
                     {existingImages
                       .filter(img => !deletedExistingImages.includes(img))
                       .filter(img => !existingThumbnails.includes(img)) // Remove duplicates with thumbnails
@@ -1010,12 +1011,12 @@ export default function AdminClient() {
               )}
               
               {deletedExistingImages.length > 0 && (
-                <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-                  <p className="text-sm text-red-700 mb-2">Images to be deleted: {deletedExistingImages.length}</p>
+                <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg sm:rounded-xl">
+                  <p className="text-xs sm:text-sm text-red-700 mb-1.5 sm:mb-2">Images to be deleted: {deletedExistingImages.length}</p>
                   <button
                     type="button"
                     onClick={() => setDeletedExistingImages([])}
-                    className="text-xs text-red-600 hover:text-red-700 underline"
+                    className="text-[10px] sm:text-xs text-red-600 hover:text-red-700 underline"
                   >
                     Undo deletion
                   </button>
@@ -1025,15 +1026,15 @@ export default function AdminClient() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-secondary-700 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">
               Videos (optional)
             </label>
-            <input name="videos" type="file" accept="video/*" multiple onChange={handleVideoChange} className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
+            <input name="videos" type="file" accept="video/*" multiple onChange={handleVideoChange} className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 sm:py-3 text-xs sm:text-sm text-secondary-900 file:mr-2 sm:file:mr-4 file:py-1.5 sm:file:py-2 file:px-3 sm:file:px-4 file:rounded-md sm:file:rounded-lg file:border-0 file:text-xs sm:file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
             
             {selectedVideoFiles.length > 0 && (
-              <div className="mt-6">
-                <p className="text-sm text-secondary-700 mb-3 font-medium">New Videos:</p>
-                <div className="space-y-3">
+              <div className="mt-4 sm:mt-6">
+                <p className="text-xs sm:text-sm text-secondary-700 mb-2 sm:mb-3 font-medium">New Videos:</p>
+                <div className="space-y-2 sm:space-y-3">
                   {selectedVideoFiles.map((file, idx) => {
                     const rotated = rotatedVideoFiles.get(file);
                     return (
@@ -1060,12 +1061,12 @@ export default function AdminClient() {
             )}
             
             {editingId && existingVideos.length > 0 && (
-              <div className="mt-6">
-                <p className="text-sm text-secondary-700 mb-3 font-medium">Existing Videos:</p>
+              <div className="mt-4 sm:mt-6">
+                <p className="text-xs sm:text-sm text-secondary-700 mb-2 sm:mb-3 font-medium">Existing Videos:</p>
                 <div className="space-y-2">
                   {existingVideos.map((src, idx) => (
-                    <div key={idx} className="p-3 bg-secondary-50 rounded-lg border border-secondary-200">
-                      <p className="text-sm text-secondary-600 truncate">{src}</p>
+                    <div key={idx} className="p-2.5 sm:p-3 bg-secondary-50 rounded-lg border border-secondary-200">
+                      <p className="text-xs sm:text-sm text-secondary-600 truncate">{src}</p>
                     </div>
                   ))}
                 </div>
@@ -1073,16 +1074,16 @@ export default function AdminClient() {
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-            <button type="submit" disabled={submitting} className="btn-primary-lg w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+            <button type="submit" disabled={submitting} className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base font-semibold bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg sm:rounded-xl shadow-medium hover:shadow-large hover:scale-105 transition-all duration-300 w-full sm:w-auto">
               {editingId ? "Update Media" : "Create Media"}
             </button>
             {editingId && (
-              <button type="button" onClick={() => setEditingId(null)} className="btn-outline-lg w-full sm:w-auto">
+              <button type="button" onClick={() => setEditingId(null)} className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base font-semibold border-2 border-primary-500 text-primary-600 hover:bg-primary-500 hover:text-white rounded-lg sm:rounded-xl transition-all duration-300 w-full sm:w-auto">
                 Cancel Edit
               </button>
             )}
-            <p className="text-xs sm:text-sm text-secondary-500 text-center sm:text-left sm:ml-auto">
+            <p className="text-[10px] sm:text-xs md:text-sm text-secondary-500 text-center sm:text-left sm:ml-auto">
               Images are auto-converted to WebP (q=100).
             </p>
           </div>
@@ -1125,7 +1126,7 @@ export default function AdminClient() {
             </div>
           </div>
           
-          <div className="p-4 md:p-6">
+          <div className="p-3 sm:p-4 md:p-6">
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}

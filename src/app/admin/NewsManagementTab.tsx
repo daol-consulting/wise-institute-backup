@@ -50,65 +50,67 @@ function SortableNewsItem({ item, onEdit, onDelete, isDeleting }: {
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-white rounded-xl border border-secondary-200 p-5 mb-4 transition-all duration-200 relative shadow-soft ${
+      className={`bg-white rounded-lg sm:rounded-xl border border-secondary-200 p-3 sm:p-4 md:p-5 mb-3 sm:mb-4 transition-all duration-200 relative shadow-soft ${
         isDragging ? 'shadow-large border-primary-300' : 'hover:border-primary-300 hover:shadow-medium'
       } ${isDeleting ? 'opacity-60' : ''}`}
     >
       {isDeleting && (
-        <div className="absolute inset-0 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center z-10">
+        <div className="absolute inset-0 bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl flex items-center justify-center z-10">
           <div className="flex flex-col items-center gap-2">
-            <svg className="animate-spin h-6 w-6 text-primary-600" viewBox="0 0 24 24">
+            <svg className="animate-spin h-5 w-5 sm:h-6 sm:w-6 text-primary-600" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
             </svg>
-            <span className="text-sm font-medium text-secondary-700">Deleting...</span>
+            <span className="text-xs sm:text-sm font-medium text-secondary-700">Deleting...</span>
           </div>
         </div>
       )}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <div
           {...attributes}
           {...listeners}
-          className={`cursor-grab active:cursor-grabbing p-2 hover:bg-secondary-50 rounded-lg flex-shrink-0 transition-colors ${isDeleting ? 'pointer-events-none' : ''}`}
+          className={`cursor-grab active:cursor-grabbing p-1.5 sm:p-2 hover:bg-secondary-50 rounded-lg flex-shrink-0 transition-colors self-start ${isDeleting ? 'pointer-events-none' : ''}`}
         >
-          <GripVertical className="w-5 h-5 text-secondary-400" />
+          <GripVertical className="w-4 h-4 sm:w-5 sm:h-5 text-secondary-400" />
         </div>
         
-        {item.image && (
-          <div className="w-20 h-20 relative rounded-xl overflow-hidden flex-shrink-0 border border-secondary-200">
-            <Image src={item.image} alt={item.title} fill className="object-cover" />
+        <div className="flex-1 flex items-center gap-3 sm:gap-4 md:gap-5 min-w-0 w-full sm:w-auto">
+          {item.image && (
+            <div className="w-16 h-16 sm:w-20 sm:h-20 relative rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0 border border-secondary-200">
+              <Image src={item.image} alt={item.title} fill className="object-cover" />
+            </div>
+          )}
+          
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1">
+              <span className={`text-[10px] sm:text-xs font-semibold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full ${
+                item.categoryColor === 'blue'
+                  ? 'text-blue-600 bg-blue-50'
+                  : item.categoryColor === 'teal'
+                  ? 'text-primary-600 bg-primary-50'
+                  : 'text-secondary-600 bg-secondary-50'
+              }`}>
+                {item.category}
+              </span>
+              <span className="text-[10px] sm:text-xs text-secondary-500">{item.date}</span>
+            </div>
+            <h3 className="font-semibold text-base sm:text-lg text-secondary-900 truncate mb-0.5 sm:mb-1">{item.title}</h3>
+            <p className="text-xs sm:text-sm text-secondary-600 line-clamp-2">{item.description}</p>
           </div>
-        )}
-        
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 mb-1">
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
-              item.categoryColor === 'blue'
-                ? 'text-blue-600 bg-blue-50'
-                : item.categoryColor === 'teal'
-                ? 'text-primary-600 bg-primary-50'
-                : 'text-secondary-600 bg-secondary-50'
-            }`}>
-              {item.category}
-            </span>
-            <span className="text-xs text-secondary-500">{item.date}</span>
-          </div>
-          <h3 className="font-semibold text-lg text-secondary-900 truncate mb-1">{item.title}</h3>
-          <p className="text-sm text-secondary-600 line-clamp-2">{item.description}</p>
         </div>
         
-        <div className="flex gap-3 flex-shrink-0">
+        <div className="flex gap-2 sm:gap-3 flex-shrink-0 w-full sm:w-auto">
           <button
             onClick={() => onEdit(item.id)}
             disabled={isDeleting}
-            className="px-5 py-2 text-sm bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+            className="flex-1 sm:flex-none px-4 sm:px-5 py-2 text-xs sm:text-sm bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
             Edit
           </button>
           <button
             onClick={() => onDelete(item.id)}
             disabled={isDeleting}
-            className="px-5 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed relative font-medium"
+            className="flex-1 sm:flex-none px-4 sm:px-5 py-2 text-xs sm:text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed relative font-medium"
           >
             {isDeleting && (
               <span className="absolute inset-0 flex items-center justify-center">
@@ -365,28 +367,28 @@ export default function NewsManagementTab() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Create/Edit Form */}
-      <form onSubmit={onSubmit} className="bg-white rounded-3xl border border-secondary-200 shadow-soft p-6 md:p-8 grid grid-cols-1 gap-6 md:gap-8" encType="multipart/form-data">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={onSubmit} className="bg-white rounded-2xl sm:rounded-3xl border border-secondary-200 shadow-soft p-4 sm:p-6 md:p-8 grid grid-cols-1 gap-4 sm:gap-6 md:gap-8" encType="multipart/form-data">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
-            <label className="block text-sm font-medium text-secondary-700 mb-2">Title *</label>
-            <input name="title" value={title} onChange={(e)=>setTitle(e.target.value)} required className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
+            <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">Title *</label>
+            <input name="title" value={title} onChange={(e)=>setTitle(e.target.value)} required className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-secondary-700 mb-2">Date *</label>
-            <input name="date" type="date" value={date} onChange={(e)=>setDate(e.target.value)} required className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
+            <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">Date *</label>
+            <input name="date" type="date" value={date} onChange={(e)=>setDate(e.target.value)} required className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
-            <label className="block text-sm font-medium text-secondary-700 mb-2">Category *</label>
-            <input name="category" value={category} onChange={(e)=>setCategory(e.target.value)} required className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
+            <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">Category *</label>
+            <input name="category" value={category} onChange={(e)=>setCategory(e.target.value)} required className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-secondary-700 mb-2">Category Color *</label>
-            <select name="categoryColor" value={categoryColor} onChange={(e)=>setCategoryColor(e.target.value as 'blue' | 'teal' | 'gray')} required className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors">
+            <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">Category Color *</label>
+            <select name="categoryColor" value={categoryColor} onChange={(e)=>setCategoryColor(e.target.value as 'blue' | 'teal' | 'gray')} required className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-secondary-900 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors">
               <option value="blue">Blue</option>
               <option value="teal">Teal</option>
               <option value="gray">Gray</option>
@@ -395,48 +397,48 @@ export default function NewsManagementTab() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-secondary-700 mb-2">Description *</label>
-          <textarea name="description" value={description} onChange={(e)=>setDescription(e.target.value)} rows={5} required className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors resize-none" />
+          <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">Description *</label>
+          <textarea name="description" value={description} onChange={(e)=>setDescription(e.target.value)} rows={4} required className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors resize-none" />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-secondary-700 mb-2">Link (optional)</label>
-          <input name="href" value={href} onChange={(e)=>setHref(e.target.value)} className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
+          <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">Link (optional)</label>
+          <input name="href" value={href} onChange={(e)=>setHref(e.target.value)} className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-secondary-900 placeholder-secondary-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-secondary-700 mb-2">Image (optional)</label>
-          <input name="image" type="file" accept="image/*" onChange={handleImageChange} className="w-full bg-white border border-secondary-200 rounded-xl px-4 py-3 text-secondary-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
+          <label className="block text-xs sm:text-sm font-medium text-secondary-700 mb-1.5 sm:mb-2">Image (optional)</label>
+          <input name="image" type="file" accept="image/*" onChange={handleImageChange} className="w-full bg-white border border-secondary-200 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 sm:py-3 text-xs sm:text-sm text-secondary-900 file:mr-2 sm:file:mr-4 file:py-1.5 sm:file:py-2 file:px-3 sm:file:px-4 file:rounded-md sm:file:rounded-lg file:border-0 file:text-xs sm:file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-colors" />
           
           {editingId && existingImage && (
             <div className="mt-4">
-              <p className="text-sm text-secondary-700 mb-2 font-medium">Existing Image:</p>
-              <div className="relative w-32 h-32 rounded-xl overflow-hidden border border-secondary-200">
+              <p className="text-xs sm:text-sm text-secondary-700 mb-2 font-medium">Existing Image:</p>
+              <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-lg sm:rounded-xl overflow-hidden border border-secondary-200">
                 <Image src={existingImage} alt="Existing" fill className="object-cover" />
               </div>
               <label className="inline-flex items-center gap-2 mt-2 cursor-pointer">
                 <input type="checkbox" checked={clearImage} onChange={(e)=>setClearImage(e.target.checked)} className="rounded border-secondary-200" />
-                <span className="text-sm text-secondary-600">Remove image</span>
+                <span className="text-xs sm:text-sm text-secondary-600">Remove image</span>
               </label>
             </div>
           )}
           
           {imagePreview && (
             <div className="mt-4">
-              <p className="text-sm text-secondary-700 mb-2 font-medium">New Image Preview:</p>
-              <div className="relative w-32 h-32 rounded-xl overflow-hidden border border-secondary-200">
+              <p className="text-xs sm:text-sm text-secondary-700 mb-2 font-medium">New Image Preview:</p>
+              <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-lg sm:rounded-xl overflow-hidden border border-secondary-200">
                 <Image src={imagePreview} alt="Preview" fill className="object-cover" />
               </div>
             </div>
           )}
         </div>
 
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-          <button type="submit" disabled={submitting} className="btn-primary-lg w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+          <button type="submit" disabled={submitting} className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base font-semibold bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg sm:rounded-xl shadow-medium hover:shadow-large hover:scale-105 transition-all duration-300 w-full sm:w-auto">
             {editingId ? "Update News" : "Create News"}
           </button>
           {editingId && (
-            <button type="button" onClick={() => setEditingId(null)} className="btn-outline-lg w-full sm:w-auto">
+            <button type="button" onClick={() => setEditingId(null)} className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base font-semibold border-2 border-primary-500 text-primary-600 hover:bg-primary-500 hover:text-white rounded-lg sm:rounded-xl transition-all duration-300 w-full sm:w-auto">
               Cancel Edit
             </button>
           )}
@@ -444,8 +446,8 @@ export default function NewsManagementTab() {
       </form>
 
       {/* News Items List */}
-      <div className="bg-white rounded-3xl border border-secondary-200 overflow-hidden shadow-soft">
-        <div className="px-4 md:px-6 py-3 md:py-4 border-b border-secondary-100 font-medium">
+      <div className="bg-white rounded-2xl sm:rounded-3xl border border-secondary-200 overflow-hidden shadow-soft">
+        <div className="px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 border-b border-secondary-100 font-medium">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center flex-wrap gap-2">
               <span className="text-base sm:text-lg text-secondary-900">News Items</span>
@@ -471,7 +473,7 @@ export default function NewsManagementTab() {
           </div>
         </div>
         
-        <div className="p-4 md:p-6">
+        <div className="p-3 sm:p-4 md:p-6">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
