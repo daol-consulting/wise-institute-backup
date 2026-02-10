@@ -4,7 +4,7 @@ import { ArrowRight, Users, Calendar, Award, ChevronLeft, ChevronRight, Clock, V
 import Link from 'next/link'
 import Script from 'next/script'
 import Logo from '@/components/Logo'
-import { useState, useEffect, useRef, type TouchEvent } from 'react'
+import { useState, useEffect, useRef, type TouchEvent, type MouseEvent } from 'react'
 import Image from 'next/image'
 import DiagonalRibbon from '@/components/DiagonalRibbon'
 import SectionHeader from '@/components/SectionHeader'
@@ -100,12 +100,21 @@ function NewsSectionWithCMS({ isAdmin, onEditNews }: { isAdmin: boolean; onEditN
   );
 }
 
+const POPUP_CLOSED_DATE_KEY = 'wise_pdc_popup_closed_date';
+
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const autoSlideIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const [isWelcomePopupOpen, setIsWelcomePopupOpen] = useState(true)
+  const [popupOffset, setPopupOffset] = useState({ x: 0, y: 0 })
+  const [isDraggingPopup, setIsDraggingPopup] = useState(false)
+  const popupDragStartRef = useRef<{ x: number; y: number } | null>(null)
+  const [sheetOffsetY, setSheetOffsetY] = useState(0)
+  const [isDraggingSheet, setIsDraggingSheet] = useState(false)
+  const sheetTouchStartRef = useRef<number | null>(null)
   
   // Campaign slider state (second section)
   const [campaignIndex, setCampaignIndex] = useState(0)
@@ -218,6 +227,64 @@ export default function HomePage() {
     };
     checkAdmin();
   }, []);
+
+  // Check if popup was closed "for today"
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const today = new Date();
+    const todayKey = today.toISOString().slice(0, 10); // YYYY-MM-DD
+    const stored = window.localStorage.getItem(POPUP_CLOSED_DATE_KEY);
+    if (stored === todayKey) {
+      setIsWelcomePopupOpen(false);
+    }
+  }, []);
+
+  const handlePopupDragStart = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDraggingPopup(true);
+    popupDragStartRef.current = {
+      x: e.clientX - popupOffset.x,
+      y: e.clientY - popupOffset.y,
+    };
+  };
+
+  const handlePopupDragMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isDraggingPopup || !popupDragStartRef.current) return;
+    setPopupOffset({
+      x: e.clientX - popupDragStartRef.current.x,
+      y: e.clientY - popupDragStartRef.current.y,
+    });
+  };
+
+  const handlePopupDragEnd = () => {
+    setIsDraggingPopup(false);
+  };
+
+  const handleSheetTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    sheetTouchStartRef.current = event.touches[0].clientY;
+    setIsDraggingSheet(true);
+  };
+
+  const handleSheetTouchMove = (event: TouchEvent<HTMLDivElement>) => {
+    if (sheetTouchStartRef.current === null) return;
+    const currentY = event.touches[0].clientY;
+    const delta = currentY - sheetTouchStartRef.current;
+    // We only allow upwards movement (negative delta) for closing gesture
+    if (delta <= 0) {
+      setSheetOffsetY(delta);
+    }
+  };
+
+  const handleSheetTouchEnd = () => {
+    const threshold = -80; // swipe up at least 80px to close
+    if (sheetOffsetY <= threshold) {
+      setIsWelcomePopupOpen(false);
+    } else {
+      setSheetOffsetY(0);
+    }
+    setIsDraggingSheet(false);
+    sheetTouchStartRef.current = null;
+  };
 
   // Load landing page settings from CMS
   useEffect(() => {
@@ -942,6 +1009,128 @@ export default function HomePage() {
         src="https://elfsightcdn.com/platform.js"
         strategy="lazyOnload"
       />
+
+      {/* Simple image-only popup with "close today" option */}
+      {isWelcomePopupOpen && (
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 sm:px-6"
+          onClick={() => setIsWelcomePopupOpen(false)}
+          onMouseMove={handlePopupDragMove}
+          onMouseUp={handlePopupDragEnd}
+          onMouseLeave={handlePopupDragEnd}
+        >
+          {isDesktop ? (
+            // Desktop: draggable centered dialog
+            <div
+              className="relative w-full max-w-lg"
+              onClick={(e) => e.stopPropagation()}
+              style={{ transform: `translate(${popupOffset.x}px, ${popupOffset.y}px)` }}
+            >
+              <div className="relative w-full bg-white/20 backdrop-blur-xl rounded-3xl overflow-hidden shadow-[0_24px_60px_rgba(15,23,42,0.75)] border border-white/40">
+                {/* Drag handle area */}
+                <div
+                  className="absolute inset-x-0 top-0 h-6 cursor-move z-20"
+                  onMouseDown={handlePopupDragStart}
+                />
+                <div className="relative w-full aspect-[4/5] sm:aspect-[3/4] p-3 sm:p-4">
+                  <div className="relative w-full h-full rounded-2xl overflow-hidden bg-white">
+                    <Image
+                      src="/gallery/pdc-2026-live-surgery.png"
+                      alt="WISE Institute LIVE SURGERY at PDC 2026"
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 90vw, 640px"
+                      priority
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 px-4 sm:px-6 pb-4 sm:pb-5 pt-3 bg-white/75 border-t border-slate-200/70">
+                  <button
+                    type="button"
+                    className="w-full sm:w-auto flex-1 rounded-full border border-slate-300 bg-white/80 text-xs sm:text-sm font-medium text-slate-700 px-4 py-2 hover:bg-white transition-colors"
+                    onClick={() => {
+                      const today = new Date();
+                      const todayKey = today.toISOString().slice(0, 10);
+                      if (typeof window !== 'undefined') {
+                        window.localStorage.setItem(POPUP_CLOSED_DATE_KEY, todayKey);
+                      }
+                      setIsWelcomePopupOpen(false);
+                    }}
+                  >
+                    Close for today
+                  </button>
+                  <button
+                    type="button"
+                    className="w-full sm:w-auto flex-1 rounded-full bg-slate-900/90 text-xs sm:text-sm font-semibold text-white px-4 py-2 hover:bg-slate-900 transition-colors"
+                    onClick={() => setIsWelcomePopupOpen(false)}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            // Mobile: bottom sheet style, swipe up to close
+            <div
+              className="fixed inset-x-0 bottom-0 z-50"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div
+                className="mx-auto max-w-md pb-safe"
+                onTouchStart={handleSheetTouchStart}
+                onTouchMove={handleSheetTouchMove}
+                onTouchEnd={handleSheetTouchEnd}
+                style={{
+                  transform: `translateY(${sheetOffsetY}px)`,
+                  transition: isDraggingSheet ? 'none' : 'transform 250ms ease-out',
+                }}
+              >
+                <div className="mx-4 mb-4 rounded-3xl bg-white/95 backdrop-blur-xl shadow-[0_-16px_40px_rgba(15,23,42,0.65)] border border-slate-200">
+                  {/* drag handle */}
+                  <div className="flex justify-center pt-3 pb-2">
+                    <div className="h-1.5 w-12 rounded-full bg-slate-300" />
+                  </div>
+                  <div className="px-4 pb-3">
+                    <div className="relative w-full aspect-[4/5]">
+                      <Image
+                        src="/gallery/pdc-2026-live-surgery.png"
+                        alt="WISE Institute LIVE SURGERY at PDC 2026"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 100vw, 480px"
+                        priority
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2 px-4 pb-4">
+                    <button
+                      type="button"
+                      className="w-full rounded-full border border-slate-300 bg-white text-xs font-medium text-slate-700 px-4 py-2.5 hover:bg-slate-50 transition-colors"
+                      onClick={() => {
+                        const today = new Date();
+                        const todayKey = today.toISOString().slice(0, 10);
+                        if (typeof window !== 'undefined') {
+                          window.localStorage.setItem(POPUP_CLOSED_DATE_KEY, todayKey);
+                        }
+                        setIsWelcomePopupOpen(false);
+                      }}
+                    >
+                      Close for today
+                    </button>
+                    <button
+                      type="button"
+                      className="w-full rounded-full bg-slate-900 text-xs font-semibold text-white px-4 py-2.5 hover:bg-slate-800 transition-colors"
+                      onClick={() => setIsWelcomePopupOpen(false)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
     </div>
   )
