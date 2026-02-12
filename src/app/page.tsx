@@ -1022,7 +1022,7 @@ export default function HomePage() {
           {isDesktop ? (
             // Desktop: draggable centered dialog
             <div
-              className="relative w-full max-w-lg"
+              className="relative w-full max-w-sm md:max-w-md lg:max-w-lg"
               onClick={(e) => e.stopPropagation()}
               style={{ transform: `translate(${popupOffset.x}px, ${popupOffset.y}px)` }}
             >
