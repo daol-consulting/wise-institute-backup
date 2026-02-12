@@ -1026,7 +1026,7 @@ export default function HomePage() {
               onClick={(e) => e.stopPropagation()}
               style={{ transform: `translate(${popupOffset.x}px, ${popupOffset.y}px)` }}
             >
-              <div className="relative w-full bg-white/20 backdrop-blur-xl rounded-3xl overflow-hidden shadow-[0_24px_60px_rgba(15,23,42,0.75)] border border-white/40">
+              <div className="relative w-full max-h-[78vh] lg:max-h-[78vh] bg-white/20 backdrop-blur-xl rounded-3xl overflow-hidden shadow-[0_24px_60px_rgba(15,23,42,0.75)] border border-white/40 flex flex-col">
                 {/* Drag handle area */}
                 <div
                   className="absolute inset-x-0 top-0 h-6 cursor-move z-20"
